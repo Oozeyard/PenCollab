@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">PenCollab</string>
+    <string name="view_profile">View Profile</string>
+    <string name="draw">Draw</string>
+    <string name="join">Join</string>
+    <string name="discover">Discover</string>
+    <string name="gallery">Gallery :</string>
+    <string name="get_premium">Get Premium !</string>
+
+    <string name="empty"></string>
+    
+    <string name="palette_icon">🎨</string>
+    <string name="pen_icon">✏️</string>
+    <string name="picture_icon">🖼️</string>
 </resources>

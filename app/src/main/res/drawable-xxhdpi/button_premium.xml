@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="16dp" /> <!-- Valeur de radius ajustable pour contrôler le degré de rondeur -->
+    <solid android:color="#000000" /> <!-- Couleur de fond du bouton -->
+</shape>
