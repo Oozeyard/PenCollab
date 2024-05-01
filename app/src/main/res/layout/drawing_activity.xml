@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|top"
+    android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingTop="20dp">
+
+    <LinearLayout
+        android:id="@+id/container_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="11.5dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="11.5dp">
+
+        <ImageView
+            android:id="@+id/image_ic_left"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_arrow"
+            android:contentDescription="@string/empty" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="@string/drawing"
+            
+            android:textSize="20sp" />
+    </LinearLayout>
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/container_row"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:gravity="start|top"
+            android:orientation="horizontal"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp">
+
+            <LinearLayout
+                android:id="@+id/container_chip_brush"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/container_frame"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="11dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="11dp">
+
+                <FrameLayout
+                    android:id="@+id/container_frame_brush"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/container_shadow_icon">
+
+                    <TextView
+                        android:id="@+id/text_icon_brush"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@string/brush_icon"
+                        android:textSize="20sp" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/text_title_brush"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="2"
+                    android:text="@string/brush"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_chip_colors"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/container_frame"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="11dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="11dp">
+
+                <FrameLayout
+                    android:id="@+id/container_frame_colors"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/container_shadow_icon">
+
+                    <TextView
+                        android:id="@+id/text_icon_colors"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@string/palette_icon"
+                        android:textSize="20sp" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/text_title_colors"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="2"
+                    android:text="@string/colors"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/container_chip_shapes"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/container_frame"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="11dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="11dp">
+
+                <FrameLayout
+                    android:id="@+id/container_frame_shapes"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/container_shadow_icon">
+
+                    <TextView
+                        android:id="@+id/text_icon_shapes"
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="📏"
+                        android:textSize="20sp" />
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/text_title_shapes"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="2"
+                    android:text="Shapes"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <FrameLayout
+        android:id="@+id/container_frame"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="14dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/container_frame" />
+
+    <LinearLayout
+        android:id="@+id/container_button"
+        android:layout_width="328dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:gravity="start|bottom"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="1dp"
+        android:layout_marginBottom="12dp">
+
+
+        <Button
+            android:id="@+id/button_share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/white_button_with_black_border"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp"
+            android:text="@string/share" />
+
+        <Button
+            android:id="@+id/button_save"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_premium"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp"
+            android:text="@string/save" />
+    </LinearLayout>
+</LinearLayout>

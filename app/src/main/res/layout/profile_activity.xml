@@ -1,0 +1,432 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal|top"
+    android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingTop="20dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="11.5dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="11.5dp">
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_arrow"
+            android:contentDescription="@string/empty" />
+
+        <TextView
+            android:id="@+id/text_user"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:gravity="start|center_vertical"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:text="Patrick Dessine"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="16dp">
+
+        <ImageView
+            android:id="@+id/img_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:scaleType="centerInside"
+            android:background="@drawable/container_shadow_icon"
+            android:contentDescription="@string/empty" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:gravity="start|top"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="Patrick Dessine"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txt_user_status"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:ellipsize="end"
+                android:gravity="start|center_vertical"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="Premium"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/container_button"
+            android:clipToPadding="false"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="3dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="3dp">
+
+            <TextView
+                android:id="@+id/txt_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="16dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@string/log_out"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/container_text"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="28dp"
+        android:gravity="start|center_vertical"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="@string/featured_artwork"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/container_row"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="start|top"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:baselineAligned="false">
+
+
+        <ListView
+            android:layout_width="0dp"
+            android:layout_height="236dp"
+            android:layout_weight="1"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:baselineAligned="false"/>
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="start|top"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <Button
+            android:id="@+id/btn_secondary_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/white_button_with_black_border"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp"
+            android:text="Sort" />
+                
+
+
+        <Button
+            android:id="@+id/btn_primary_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/button_premium"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="10dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="10dp"
+            android:text="Filter" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_row1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="start|top"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
+
+        <LinearLayout
+            android:id="@+id/container_card2"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/container_shadow_commentary"
+            android:gravity="start|center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp">
+
+            <LinearLayout
+                android:id="@+id/container_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/container_avatar1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:gravity="start|center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/avatar"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/container_shadow_icon"
+                        android:scaleType="centerInside"
+                        android:contentDescription="@string/empty"/>
+
+                    <TextView
+                        android:id="@+id/container_frame1"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:gravity="start|center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="Goultard"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!-- Score -->
+                <ImageView
+                    android:id="@+id/image_frame"
+                    android:layout_width="58.26dp"
+                    android:layout_height="9.81dp"
+                    android:layout_marginStart="4dp"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/empty"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_card_title"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:gravity="start|top"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="Great sketching skills!"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/container_icon_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="❤️"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_icon1"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="💬"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/container_card3"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/container_shadow_commentary"
+            android:gravity="start|center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="12dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="12dp">
+
+            <LinearLayout
+                android:id="@+id/container_user1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/container_avatar2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:gravity="start|center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/avatar1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:background="@drawable/container_shadow_icon"
+                        android:scaleType="centerInside"
+                        android:contentDescription="@string/empty"/>
+
+                    <TextView
+                        android:id="@+id/container_frame2"
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:layout_marginStart="8dp"
+                        android:ellipsize="end"
+                        android:gravity="start|center_vertical"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="Mark"
+                        android:textColor="@color/black"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/image_frame1"
+                    android:layout_width="58.26dp"
+                    android:layout_height="9.81dp"
+                    android:layout_marginStart="4dp"
+                    android:scaleType="centerInside"
+                    android:contentDescription="@string/empty"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/text_card_title1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:gravity="start|top"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="Beautiful colors!"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/container_icon_buttons1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clipToPadding="false"
+                android:gravity="start|center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/text_icon2"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="❤️"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/text_icon3"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="💬"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

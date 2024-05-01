@@ -2,43 +2,11 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container_main_menu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal|top"
     android:orientation="vertical"
     android:paddingBottom="12dp" >
-
-    <LinearLayout
-        android:id="@+id/container_top_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/container_top_bar"
-        android:clipToPadding="false"
-        android:gravity="start|top"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="24dp" />
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="25dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="11.5dp"
-            android:layout_marginBottom="12dp"
-            android:gravity="start|center_vertical"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:text="@string/app_name"
-            android:textColor="#FF000000"
-            android:textSize="20sp" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,6 +23,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerInside"
+            android:background="@drawable/container_shadow_icon"
             android:contentDescription="@string/empty" />
 
         <LinearLayout
@@ -71,11 +40,9 @@
                 android:layout_height="24dp"
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
-                android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="Patrick Dessine"
-                android:textColor="#FF000000"
                 android:textSize="16sp" />
 
             <TextView
@@ -84,11 +51,9 @@
                 android:layout_height="16dp"
                 android:ellipsize="end"
                 android:gravity="start|center_vertical"
-                android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="Premium"
-                android:textColor="#FF000000"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -110,11 +75,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="16dp"
                 android:gravity="start|center_vertical"
-                android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:text="@string/view_profile"
-                android:textColor="#FF000000"
                 android:textSize="12sp" />
 
             <ImageView
@@ -165,7 +128,6 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:text="@string/pen_icon"
-                    android:textColor="#FF000000"
                     android:textSize="30sp" />
             </FrameLayout>
 
@@ -175,10 +137,8 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:includeFontPadding="false"
                 android:maxLines="2"
                 android:text="@string/draw"
-                android:textColor="#FF000000"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -211,7 +171,6 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:text="@string/picture_icon"
-                    android:textColor="#FF000000"
                     android:textSize="30sp" />
             </FrameLayout>
 
@@ -221,10 +180,8 @@
                 android:layout_marginTop="4dp"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:includeFontPadding="false"
                 android:maxLines="2"
                 android:text="@string/join"
-                android:textColor="#FF000000"
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
@@ -261,7 +218,6 @@
                 android:includeFontPadding="false"
                 android:maxLines="2"
                 android:text="@string/palette_icon"
-                android:textColor="#FF000000"
                 android:textSize="30sp" />
         </FrameLayout>
 
@@ -272,10 +228,8 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:gravity="center"
-            android:includeFontPadding="false"
             android:maxLines="2"
             android:text="@string/discover"
-            android:textColor="#FF000000"
             android:textSize="12sp" />
     </LinearLayout>
 
@@ -289,88 +243,31 @@
         android:maxLines="1"
         android:singleLine="true"
         android:text="@string/gallery"
-        android:textColor="#FF000000"
         android:textSize="20sp" />
 
 
-    <LinearLayout
+    <ListView
         android:id="@+id/container_gallery"
         android:layout_width="match_parent"
         android:layout_height="236dp"
         android:layout_marginTop="12dp"
-        android:gravity="start|top"
-        android:orientation="horizontal"
-        android:paddingLeft="12dp"
-        android:paddingRight="12dp"
-        android:baselineAligned="false">
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp" />
 
 
-        <LinearLayout
-            android:id="@+id/container_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/container_frame"
-            android:gravity="start|top"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/image_artwork"
-                android:layout_width="match_parent"
-                android:layout_height="164dp"
-                android:background="@drawable/image_artwork"
-                android:orientation="vertical">
-
-                <!-- Set the picture here -->
-
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/text_title_drawing"
-                android:layout_width="match_parent"
-                android:layout_height="16dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:gravity="center_horizontal"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="Drawing 1"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/text_subtitle_sketch"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_horizontal|center_vertical"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="Sketch"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-    <LinearLayout
+    <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="vertical" />
+
 
     <Button
         android:layout_width="333dp"
-        android:layout_height="43dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:background="@drawable/button_premium"
-        android:gravity="bottom|center"
+        android:gravity="center"
         android:text="@string/get_premium" />
     
 
