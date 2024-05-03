@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container_card"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/container_frame"
+    android:gravity="start|top"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/image_artwork"
+        android:layout_width="200dp"
+        android:layout_height="164dp"
+        android:background="@drawable/image_artwork"
+        android:orientation="vertical"
+        android:layout_margin="2dp">
+
+        <!-- Set the picture here -->
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/text_title_drawing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:text="@string/empty"
+        android:textSize="17sp" />
+
+</LinearLayout>

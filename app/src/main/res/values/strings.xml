@@ -1,3 +1,48 @@
 <resources>
+    <!-- UI -->
     <string name="app_name">PenCollab</string>
+<<<<<<< Updated upstream
+=======
+    <string name="view_profile">View Profile</string>
+    <string name="draw">Draw</string>
+    <string name="drawing">Drawing</string>
+    <string name="join">Join</string>
+    <string name="discover">Discover</string>
+    <string name="gallery">Gallery :</string>
+
+    <!-- Premium page -->
+    <string name="get_premium">Get Premium !</string>
+    <string name="premium">Premium</string>
+    <string name="advantage">Advantage :</string>
+    <string name="advantage_list">- History of the design stages \n- Access to more tools</string>
+    <string name="pricing">Pricing :</string>
+    <string name="price">4.99$/month</string>
+    <string name="buy">Buy Now !</string>
+
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="email">Email</string>
+    <string name="enter_email">Enter your mail</string>
+    <string name="password">Password</string>
+    <string name="enter_password">Enter your password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_out">Log Out</string>
+    <string name="brush">Brush</string>
+    <string name="colors">Colors</string>
+    <string name="share">Share</string>
+    <string name="save">Save</string>
+    <string name="featured_artwork">Featured Artwork</string>
+    <string name="search">Search</string>
+
+    <string name="empty" />
+
+    <!-- Icon -->
+    <string name="palette_icon">🎨</string>
+    <string name="pen_icon">✏️</string>
+    <string name="picture_icon">🖼️</string>
+    <string name="brush_icon">🖌️</string>
+    <string name="rule_icon">📏</string>
+>>>>>>> Stashed changes
 </resources>
