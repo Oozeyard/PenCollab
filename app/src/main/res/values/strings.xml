@@ -1,8 +1,6 @@
 <resources>
     <!-- UI -->
     <string name="app_name">PenCollab</string>
-<<<<<<< Updated upstream
-=======
     <string name="view_profile">View Profile</string>
     <string name="draw">Draw</string>
     <string name="drawing">Drawing</string>
@@ -44,5 +42,4 @@
     <string name="picture_icon">🖼️</string>
     <string name="brush_icon">🖌️</string>
     <string name="rule_icon">📏</string>
->>>>>>> Stashed changes
 </resources>
