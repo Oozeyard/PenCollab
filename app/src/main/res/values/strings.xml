@@ -1,5 +1,4 @@
 <resources>
-    <!-- UI -->
     <string name="app_name">PenCollab</string>
     <string name="view_profile">View Profile</string>
     <string name="draw">Draw</string>
@@ -8,7 +7,7 @@
     <string name="discover">Discover</string>
     <string name="gallery">Gallery :</string>
 
-    <!-- Premium page -->
+    <!--  Premium page  -->
     <string name="get_premium">Get Premium !</string>
     <string name="premium">Premium</string>
     <string name="advantage">Advantage :</string>
@@ -17,8 +16,11 @@
     <string name="price">4.99$/month</string>
     <string name="buy">Buy Now !</string>
 
-    <string name="login">Login</string>
+    <string name="login">Log In</string>
     <string name="username">Username</string>
+    <string name="user">User</string>
+    <string name="unregistered">unregistered</string>
+    <string name="registered">registered</string>
     <string name="enter_username">Enter your username</string>
     <string name="email">Email</string>
     <string name="enter_email">Enter your mail</string>
@@ -33,10 +35,9 @@
     <string name="save">Save</string>
     <string name="featured_artwork">Featured Artwork</string>
     <string name="search">Search</string>
+    <string name="empty"/>
 
-    <string name="empty" />
-
-    <!-- Icon -->
+    <!--  Icon  -->
     <string name="palette_icon">🎨</string>
     <string name="pen_icon">✏️</string>
     <string name="picture_icon">🖼️</string>

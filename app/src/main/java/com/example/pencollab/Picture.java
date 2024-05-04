@@ -6,7 +6,7 @@ public class Picture {
     long cpt = 0;
     String title;
 
-    public Picture(String title, String other) {
+    public Picture(String title) {
         this.id = cpt; cpt++;
         this.title = title;
     }
