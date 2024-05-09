@@ -1,6 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PenCollab" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Base.Theme.PenCollab" parent="Theme.AppCompat.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
+
+        <!-- Color text in TextView -->
+        <item name="android:textColor">@color/white</item>
     </style>
 </resources>

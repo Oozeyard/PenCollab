@@ -1,8 +1,8 @@
 package com.example.pencollab.Activity;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -12,17 +12,19 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import com.example.pencollab.DataBase.AppDatabase;
+import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
-import com.example.pencollab.GalleryArrayAdapter;
-import com.example.pencollab.Picture;
-import com.example.pencollab.R;
+import com.example.pencollab.DataBase.Drawing;
 import com.example.pencollab.DataBase.User;
+import com.example.pencollab.GalleryArrayAdapter;
+import com.example.pencollab.R;
+
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
     Button premium_button;
     Boolean isregistered;
     TextView profile_button, txt_user_name, txt_user_status;
+
+    //private AppDatabase db;
+    //private UserDAO userDAO;
+    //private DrawingDAO drawingDAO;
+
+    User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +56,8 @@ public class MainActivity extends AppCompatActivity {
         txt_user_name = findViewById(R.id.txt_user_name);
         txt_user_status = findViewById(R.id.txt_user_status);
 
-        // Build Database
-        // WARNING : ENLEVER .allowMainThreadQueries() ET METTRE UN THREAD A PART
-        AppDatabase db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, "database-name").allowMainThreadQueries().build();
-        // WARNING : ENLEVER .allowMainThreadQueries() ET METTRE UN THREAD A PART
+        // Get Database
+        AppDatabase db = DatabaseHolder.getInstance(getApplicationContext());
 
         // Get DAO
         UserDAO userDAO = db.userDAO();
@@ -59,15 +65,22 @@ public class MainActivity extends AppCompatActivity {
 
         //userDAO.nukeTable(); ca nettoie bien
 
-        // Check if the user is registered or not
-        User currentUser = new User();
-        long id = userDAO.insertUser(currentUser);
+        // Get currentUser
+        currentUser = userDAO.getCurrentUser();
 
-        User Michel = new User("Michel", "6969!", "xxxvoley@gmail.com", false);
-        long MichelID = userDAO.insertUser(Michel);
+        // Check if the user is null
+        if (currentUser == null) {
+            currentUser = new User();
+            currentUser.setCurrentUser(true);
+            userDAO.insertUser(currentUser);
+        }
+
+        Log.d("User", "Current User: " + currentUser.getUsername() + ", Mail: " + currentUser.getEmail());
+
+        long currentUserId = currentUser.getId();
 
         // Unregistered / registered
-        if (currentUser.getId() == 0) {
+        if (currentUserId <= 1 ) { // no registered (id <= 1 : default user)
             profile_button.setText(R.string.login);
             join_layout.setVisibility(View.GONE);
             isregistered = false;
@@ -80,36 +93,35 @@ public class MainActivity extends AppCompatActivity {
             txt_user_status.setText(R.string.registered);
         }
 
-        txt_user_name.setText(currentUser.getUsername());
+        txt_user_name.setText(currentUser.getUsername()); // write the user name
 
         // Handle activity change
-        draw_layout.setOnClickListener(v -> this.startActivity(new Intent(MainActivity.this, DrawingActivity.class)));
-        join_layout.setOnClickListener(v -> this.startActivity(new Intent(MainActivity.this, PreviewActivity.class)));
-        discover_layout.setOnClickListener(v -> this.startActivity(new Intent(MainActivity.this, DiscoverActivity.class)));
+        draw_layout.setOnClickListener(v -> startNewActivity(DrawingActivity.class));
+        join_layout.setOnClickListener(v -> startNewActivity(PreviewActivity.class));
+        discover_layout.setOnClickListener(v -> startNewActivity(DiscoverActivity.class));
 
-        if (isregistered) view_profile_layout.setOnClickListener(v -> this.startActivity(new Intent(MainActivity.this, ProfileActivity.class)));
-        else view_profile_layout.setOnClickListener(v -> this.startActivity(new Intent(MainActivity.this, LoginActivity.class)));
+        if (isregistered) view_profile_layout.setOnClickListener(v -> startNewActivity(ProfileActivity.class));
+        else view_profile_layout.setOnClickListener(v -> startNewActivity(LoginActivity.class));
 
-        premium_button.setOnClickListener(v -> this.startActivity(new Intent(MainActivity.this, GetPremiumActivity.class)));
+        premium_button.setOnClickListener(v -> startNewActivity(GetPremiumActivity.class));
 
 
         // Set up gallery list
         RecyclerView recyclerView_pictures = findViewById(R.id.container_gallery);
         recyclerView_pictures.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        ArrayList<Picture> pictures = new ArrayList<>();
-        long userId = currentUser.getId();
-        pictures.add(new Picture("Couilles"));
-        pictures.add(new Picture("Chattes"));
-        pictures.add(new Picture("Bite"));
-        pictures.add(new Picture("Nibard"));
-        pictures.add(new Picture("Gros Seins"));
-        pictures.add(new Picture("Les Tchoutches"));
-        pictures.add(new Picture("Masha allah"));
-        pictures.add(new Picture("Amen !"));
+        ArrayList<Drawing> drawings = new ArrayList<>(drawingDAO.getDrawingsByOwnerID(currentUserId));
+        recyclerView_pictures.setAdapter(new GalleryArrayAdapter(drawings, this));
 
-        GalleryArrayAdapter list_pictures = new GalleryArrayAdapter(pictures);
 
-        recyclerView_pictures.setAdapter(list_pictures);
+        List<User> userList = userDAO.getAll();
+
+        for (User user : userList) Log.d("User", "ID: " + user.getId() + ", Name: " + user.getUsername() + ", Mail: " + currentUser.getEmail());
+    }
+
+    // /!\ à voir /!\
+    private void startNewActivity(Class<?> classActivity) {
+        this.startActivity(new Intent(MainActivity.this, classActivity));
+        finish();
     }
 }

@@ -21,6 +21,9 @@ public class DiscoverActivity extends AppCompatActivity {
 
         back_arrow = findViewById(R.id.back_arrow);
 
-        back_arrow.setOnClickListener(v -> this.startActivity(new Intent(this, MainActivity.class)));
+        back_arrow.setOnClickListener(v -> {
+            this.startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
     }
 }

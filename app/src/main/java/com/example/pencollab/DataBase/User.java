@@ -13,37 +13,42 @@ public class User {
     @PrimaryKey(autoGenerate = true)
     public long Uid;
 
-    public String email;
-
     @NonNull
-    public String username, password;
-    boolean isPremium;
+    public String username, password, email;
+    public boolean isPremium, isCurrentUser;
 
-    @Ignore
     public User() {
         this.username = "User";
         this.isPremium = false;
         this.email = "none";
         this.password = "none";
+        this.isCurrentUser = false;
     }
 
-    public User(String username, String password, String email, Boolean premium) {
+    public User(@NonNull String username, @NonNull String password, @NonNull String email, Boolean premium) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.isPremium = premium;
+        this.isCurrentUser = false;
     }
 
-    public long getId() {
-        return Uid;
-    }
+    public long getId() { return Uid; }
 
-    public String getUsername() {
-        return username;
-    }
+    @NonNull
+    public String getUsername() { return username; }
+    public void setUsername(@NonNull String username) { this.username = username; }
 
-    public boolean getPremium() {
-        return isPremium;
-    }
+    @NonNull
+    public String getEmail() { return email; }
+    public void setEmail(@NonNull String email) { this.email = email; }
 
+    @NonNull
+    public String getPassword() { return password; }
+    public void setPassword(@NonNull String password) { this.password = password; }
+
+    public boolean getPremium() { return isPremium; }
+    public void setPremium(boolean premium) { isPremium = premium; }
+
+    public void setCurrentUser(boolean currentUser) { isCurrentUser = currentUser; }
 }

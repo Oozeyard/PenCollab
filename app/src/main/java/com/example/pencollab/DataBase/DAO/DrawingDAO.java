@@ -8,20 +8,26 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.pencollab.DataBase.Drawing;
-import com.example.pencollab.DataBase.User;
+
+import java.util.List;
 
 @Dao
 public interface DrawingDAO {
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    long insertDrawing(Drawing user); // Return UserID
+    long insertDrawing(Drawing drawing); // Return UserID
     @Update
     void updateDrawing(Drawing... drawings);
     @Delete
     void deleteDrawing(Drawing drawing);
 
-    @Query("SELECT * FROM Drawing WHERE Did = :Did")
-    Drawing getDrawingByID(int Did);
-    @Query("SELECT OwnerId FROM Drawing WHERE Did = :Did")
-    long getOwnerId(int Did);
+    @Query("SELECT * FROM Drawings WHERE Did = :Did")
+    Drawing getDrawingByID(long Did);
+    @Query("SELECT * FROM Drawings WHERE ownerId = :ownerId")
+    List<Drawing> getDrawingsByOwnerID(long ownerId);
+    @Query("SELECT OwnerId FROM Drawings WHERE Did = :Did")
+    long getOwnerId(long Did);
+
+    @Query("SELECT * FROM drawings")
+    List<Drawing> getAllDrawings();
 
 }

@@ -35,9 +35,16 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.room.common)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    // Color Picker
+    implementation("com.github.skydoves:colorpickerview:2.3.0")
+
+    // To use Gson
+    implementation("com.google.code.gson:gson:2.8.8")
 
     // RoomDB
     val room_version = "2.6.1"
