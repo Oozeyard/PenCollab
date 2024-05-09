@@ -14,21 +14,21 @@ public class User {
     public long Uid;
 
     @NonNull
-    public String username, password, email;
+    public String username, email, password;
     public boolean isPremium, isCurrentUser;
 
     public User() {
         this.username = "User";
-        this.isPremium = false;
         this.email = "none";
         this.password = "none";
+        this.isPremium = false;
         this.isCurrentUser = false;
     }
 
-    public User(@NonNull String username, @NonNull String password, @NonNull String email, Boolean premium) {
+    public User(@NonNull String username, @NonNull String email, @NonNull String password, Boolean premium) {
         this.username = username;
-        this.password = password;
         this.email = email;
+        this.password = password;
         this.isPremium = premium;
         this.isCurrentUser = false;
     }
