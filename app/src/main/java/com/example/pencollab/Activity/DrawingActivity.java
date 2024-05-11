@@ -1,10 +1,13 @@
 package com.example.pencollab.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,12 +29,14 @@ import com.example.pencollab.R;
 
 public class DrawingActivity extends AppCompatActivity {
 
+    int width, height;
     ImageView back_arrow;
     EditText drawing_title;
     DrawingView drawing_view;
-    LinearLayout container_buttons, container_chip_colors;
+    LinearLayout container_buttons, container_chip_brush, container_chip_colors, container_eraser;
 
     Drawing currentDrawing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +47,9 @@ public class DrawingActivity extends AppCompatActivity {
         drawing_view = findViewById(R.id.drawinView);
         drawing_title = findViewById(R.id.drawing_title);
         container_buttons = findViewById(R.id.container_button_share_and_save);
+        container_chip_brush = findViewById(R.id.container_chip_brush);
         container_chip_colors = findViewById(R.id.container_chip_colors);
+        container_eraser = findViewById(R.id.container_eraser);
 
 
         // Get Database
@@ -57,6 +64,19 @@ public class DrawingActivity extends AppCompatActivity {
 
         // Get the intent
         Intent intent = getIntent();
+
+        // Use ViewTreeObserver to get the dimensions of drawing_view
+        drawing_view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // Remove the listener to avoid multiple calls
+                drawing_view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                // Get the dimensions of drawing_view
+                width = drawing_view.getWidth();
+                height = drawing_view.getHeight();
+            }
+        });
 
 
         // Get the drawing
@@ -77,9 +97,12 @@ public class DrawingActivity extends AppCompatActivity {
 
         back_arrow.setOnClickListener(v -> {
             String title = drawing_title.getText().toString();
+
             if (currentDrawing == null) {
                 Drawing newDrawing = new Drawing(currentUser.getId(), title);
                 newDrawing.setDrawingData(drawing_view.toJSON());
+                newDrawing.width = width;
+                newDrawing.height = height;
                 drawingDAO.insertDrawing(newDrawing);
             } else {
                 currentDrawing.setTitle(title);
@@ -91,9 +114,25 @@ public class DrawingActivity extends AppCompatActivity {
             finish();
         });
 
+        container_chip_brush.setOnClickListener(v -> {
+            drawing_view.setupPaint();
+        });
+
         container_chip_colors.setOnClickListener(colorPickerClickListener);
 
+        container_eraser.setOnClickListener(v -> {
+            drawing_view.Eraser();
+        });
 
+
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     View.OnClickListener colorPickerClickListener = new View.OnClickListener() {

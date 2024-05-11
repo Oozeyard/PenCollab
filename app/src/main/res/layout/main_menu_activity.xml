@@ -119,12 +119,13 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="352dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:gravity="start|top"
         android:orientation="horizontal"
-
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:baselineAligned="false">
 
         <LinearLayout
@@ -215,7 +216,7 @@
 
     <LinearLayout
         android:id="@+id/container_discover"
-        android:layout_width="352dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
@@ -262,7 +263,9 @@
 
     <TextView
         android:id="@+id/text_gallery"
-        android:layout_width="334dp"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
         android:layout_height="25dp"
         android:layout_marginTop="7.5dp"
         android:layout_marginBottom="-4.5dp"

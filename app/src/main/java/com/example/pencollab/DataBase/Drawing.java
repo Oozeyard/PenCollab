@@ -19,6 +19,7 @@ public class Drawing {
     public long OwnerId;
     public String title;
     public String drawingData; // Data (JSON)
+    public int width, height;
 
     public Drawing() {}
 
@@ -34,5 +35,13 @@ public class Drawing {
 
     public void setDrawingData(String drawingData) { this.drawingData = drawingData; }
     public String getDrawingData() { return drawingData; }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }
 

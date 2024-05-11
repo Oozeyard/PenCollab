@@ -5,9 +5,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -53,6 +55,7 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
 
         // Display the drawing
         DrawingView drawingView = new DrawingView(holder.itemView.getContext(), null);
+        drawingView.setSize(currentDrawing.getWidth(), currentDrawing.getHeight());
         drawingView.fromJSON(currentDrawing.getDrawingData());
         holder.drawing_preview.addView(drawingView.getDrawingPreview());
 
