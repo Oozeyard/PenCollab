@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         User currentUser = userDAO.getCurrentUser();
 
         signup.setOnClickListener(v -> {
-            if (!getData()) return;
+            if (getStringTxt()) return;
 
             User user = userDAO.getUserByEmail(emailS);
 
@@ -73,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         login.setOnClickListener(v -> {
-            if (!getData()) return;
+            if (getStringTxt()) return;
 
             User user = userDAO.getUserByEmail(emailS);
 
@@ -115,15 +115,15 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean getData() {
+    private boolean getStringTxt() {
         usernameS = username.getText().toString().trim();
         emailS = email.getText().toString().trim();
         passwordS = password.getText().toString().trim();
 
         if (usernameS.isEmpty() || emailS.isEmpty() || passwordS.isEmpty()) {
             showAlert(getString(R.string.empty_fields));
-            return false;
-        }else return true;
+            return true;
+        }else return false;
     }
 
     private void showAlert(String message) {

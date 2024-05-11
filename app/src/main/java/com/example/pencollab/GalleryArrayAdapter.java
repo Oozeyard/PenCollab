@@ -25,17 +25,14 @@ import com.example.pencollab.DataBase.Drawing;
 import java.util.ArrayList;
 
 public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapter.ViewHolder> {
-    private ArrayList<Drawing> values;
-    private Context context;
-    private AppDatabase db;
-    private DrawingDAO drawingDAO;
+    private final ArrayList<Drawing> values;
+    private final DrawingDAO drawingDAO;
 
 
 
     public GalleryArrayAdapter(ArrayList<Drawing> values, Context context){
         this.values = values;
-        this.context = context;
-        this.db = DatabaseHolder.getInstance(context.getApplicationContext());
+        AppDatabase db = DatabaseHolder.getInstance(context.getApplicationContext());
         this.drawingDAO = db.drawingDAO();
     }
 

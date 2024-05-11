@@ -44,7 +44,7 @@ dependencies {
     implementation("com.github.skydoves:colorpickerview:2.3.0")
 
     // To use Gson
-    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     // RoomDB
     val room_version = "2.6.1"
