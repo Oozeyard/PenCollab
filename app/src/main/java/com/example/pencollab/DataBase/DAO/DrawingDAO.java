@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface DrawingDAO {
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    long insertDrawing(Drawing drawing); // Return UserID
+    long insertDrawing(Drawing drawing); // Return Id
     @Update
     void updateDrawing(Drawing... drawings);
     @Delete
@@ -22,6 +22,8 @@ public interface DrawingDAO {
 
     @Query("SELECT * FROM Drawings WHERE Did = :Did")
     Drawing getDrawingByID(long Did);
+    @Query("SELECT * FROM Drawings WHERE isPublic = true")
+    List<Drawing> getPublicDrawings();
     @Query("SELECT * FROM Drawings WHERE ownerId = :ownerId")
     List<Drawing> getDrawingsByOwnerID(long ownerId);
     @Query("SELECT OwnerId FROM Drawings WHERE Did = :Did")

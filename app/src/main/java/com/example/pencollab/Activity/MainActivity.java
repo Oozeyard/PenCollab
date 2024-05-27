@@ -7,8 +7,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,12 +34,15 @@ public class MainActivity extends AppCompatActivity {
     Button premium_button;
     Boolean isregistered;
     TextView profile_button, txt_user_name, txt_user_status;
+    RecyclerView recyclerView_pictures;
+    ArrayList<Drawing> drawings;
 
     //private AppDatabase db;
     //private UserDAO userDAO;
-    //private DrawingDAO drawingDAO;
+    private DrawingDAO drawingDAO;
 
     User currentUser;
+    long currentUserId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Get DAO
         UserDAO userDAO = db.userDAO();
-        DrawingDAO drawingDAO = db.drawingDAO();
+        drawingDAO = db.drawingDAO();
 
         //userDAO.nukeTable(); ca nettoie bien
 
@@ -77,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d("User", "Current User: " + currentUser.getUsername() + ", Mail: " + currentUser.getEmail());
 
-        long currentUserId = currentUser.getId();
+        currentUserId = currentUser.getId();
 
         // Unregistered / registered
         if (currentUserId <= 1 ) { // no registered (id <= 1 : default user)
@@ -107,14 +112,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Set up gallery list
-        RecyclerView recyclerView_pictures = findViewById(R.id.container_gallery);
+        recyclerView_pictures = findViewById(R.id.container_gallery);
         recyclerView_pictures.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
-        ArrayList<Drawing> drawings = new ArrayList<>(drawingDAO.getDrawingsByOwnerID(currentUserId));
-        recyclerView_pictures.setAdapter(new GalleryArrayAdapter(drawings, this));
-
+        updateRecycler();
 
         List<User> userList = userDAO.getAll();
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            // Close app
+            @Override
+            public void handleOnBackPressed() {
+                finishAffinity();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
 
         for (User user : userList) Log.d("User", "ID: " + user.getId() + ", Name: " + user.getUsername() + ", Mail: " + currentUser.getEmail());
     }
@@ -123,5 +135,10 @@ public class MainActivity extends AppCompatActivity {
     private void startNewActivity(Class<?> classActivity) {
         this.startActivity(new Intent(MainActivity.this, classActivity));
         finish();
+    }
+
+    public void updateRecycler() {
+        drawings = new ArrayList<>(drawingDAO.getDrawingsByOwnerID(currentUserId));
+        recyclerView_pictures.setAdapter(new GalleryArrayAdapter(drawings, this));
     }
 }

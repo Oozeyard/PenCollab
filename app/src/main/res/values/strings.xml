@@ -57,5 +57,8 @@
     <string name="brush_icon">🖌️</string>
     <string name="rule_icon">📏</string>
 
+    <string name="exporting">Exporting image</string>
+    <string name="exportTrue">Image exported successfully</string>
+    <string name="noDrawing">No Drawing found</string>
 
 </resources>

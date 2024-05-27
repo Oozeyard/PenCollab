@@ -1,28 +1,31 @@
 package com.example.pencollab;
 
-import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.PointF;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.pencollab.Activity.DrawingActivity;
+import com.example.pencollab.DataBase.Drawing;
 import com.google.gson.Gson;
+
+import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 public class DrawingView extends View {
 
@@ -30,7 +33,7 @@ public class DrawingView extends View {
     private final ArrayList<SerializedPath> paths = new ArrayList<>();
     private Paint drawPaint;
     private boolean isEraserMode = false; // Flag to indicate eraser mode
-    private int Widht, Height;
+    private int Width, Height;
 
     private float eraserSize = 20;
 
@@ -38,10 +41,12 @@ public class DrawingView extends View {
         super(context, attrs);
         //setBackgroundColor(Color.WHITE);
         setupPaint();
+        Width = getWidth();
+        Height = getHeight();
     }
 
     public void setSize(int widht, int height) {
-        Widht = widht;
+        Width = widht;
         Height = height;
     }
 
@@ -67,8 +72,6 @@ public class DrawingView extends View {
         //drawPaint.setXfermode(null); // Reset Xfermode
         drawPaint.setColor(color);
     }
-
-
 
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
@@ -99,7 +102,16 @@ public class DrawingView extends View {
         }
 
         invalidate();
+        updateDrawing();
         return true;
+    }
+
+    private void updateDrawing() {
+        Context context = getContext();
+        if (context instanceof DrawingActivity) {
+            DrawingActivity drawingActivity = (DrawingActivity) context;
+            drawingActivity.updateDrawing(toJSON());
+        }
     }
 
     public View getDrawingPreview() {
@@ -108,12 +120,9 @@ public class DrawingView extends View {
             protected void onDraw(Canvas canvas) {
                 super.onDraw(canvas);
 
-                Log.d("drawing", "original w h : " + getWidth() + " " + getHeight());
-
-
                 Matrix matrix = new Matrix();
                 matrix.setScale(
-                        (float) getWidth() / Widht,
+                        (float) getWidth() / Width,
                         (float) getHeight() / Height
                 );
 
@@ -139,10 +148,43 @@ public class DrawingView extends View {
         Gson gson = new Gson();
         SerializedPath[] deserializedPaths = gson.fromJson(json, SerializedPath[].class);
         paths.clear();
-        for (SerializedPath serializedPath : deserializedPaths) {
-            paths.add(serializedPath);
-        }
+        if (deserializedPaths == null) return;
+        Collections.addAll(paths, deserializedPaths);
         invalidate();
+    }
+
+    // Export the drawing into a PNG file
+    public boolean Export(@NonNull Context context, @NonNull String title) {
+        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+
+        // Draw the paths
+        for (SerializedPath serializedPath : paths) {
+            drawPaint.setColor(serializedPath.color);
+            canvas.drawPath(serializedPath.getPath(), drawPaint);
+        }
+
+        // Save the Bitmap to a file
+        String fileName = title + ".png";
+        OutputStream fos;
+
+        try {
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DISPLAY_NAME, fileName);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+
+            fos = context.getContentResolver().openOutputStream(
+                    Objects.requireNonNull(context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)));
+
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.flush();
+            fos.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public class SerializedPath {

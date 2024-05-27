@@ -1,18 +1,26 @@
 package com.example.pencollab.Activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.DialogInterface;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
@@ -27,6 +35,8 @@ import com.example.pencollab.DataBase.User;
 import com.example.pencollab.DrawingView;
 import com.example.pencollab.R;
 
+import java.util.Objects;
+
 public class DrawingActivity extends AppCompatActivity {
 
     int width, height;
@@ -34,6 +44,10 @@ public class DrawingActivity extends AppCompatActivity {
     EditText drawing_title;
     DrawingView drawing_view;
     LinearLayout container_buttons, container_chip_brush, container_chip_colors, container_eraser;
+    Button save_button, share_button;
+    Context context;
+    User currentUser;
+    DrawingDAO drawingDAO;
 
     Drawing currentDrawing;
 
@@ -50,17 +64,21 @@ public class DrawingActivity extends AppCompatActivity {
         container_chip_brush = findViewById(R.id.container_chip_brush);
         container_chip_colors = findViewById(R.id.container_chip_colors);
         container_eraser = findViewById(R.id.container_eraser);
+        save_button = findViewById(R.id.button_save);
+        share_button = findViewById(R.id.button_share);
+
+        context = getApplicationContext();
 
 
         // Get Database
-        AppDatabase db = DatabaseHolder.getInstance(getApplicationContext());
+        AppDatabase db = DatabaseHolder.getInstance(context);
 
         // Get DAO
         UserDAO userDAO = db.userDAO();
-        DrawingDAO drawingDAO = db.drawingDAO();
+        drawingDAO = db.drawingDAO();
 
         // Get current user
-        User currentUser = userDAO.getCurrentUser();
+        currentUser = userDAO.getCurrentUser();
 
         // Get the intent
         Intent intent = getIntent();
@@ -85,46 +103,88 @@ public class DrawingActivity extends AppCompatActivity {
             currentDrawing = drawingDAO.getDrawingByID(drawingID);
             drawing_title.setText(currentDrawing.getTitle());
             drawing_view.fromJSON(currentDrawing.getDrawingData());
-
         } else {
             currentDrawing = null;
         }
 
-
         // if user is not registered
-        if (currentUser.getId() <= 1) container_buttons.setVisibility(View.INVISIBLE);
+        if (currentUser.getId() <= 1)  {
+            share_button.setVisibility(View.INVISIBLE);
+        }
         else container_buttons.setVisibility(View.VISIBLE);
 
+        // Listener
         back_arrow.setOnClickListener(v -> {
-            String title = drawing_title.getText().toString();
-
-            if (currentDrawing == null) {
-                Drawing newDrawing = new Drawing(currentUser.getId(), title);
-                newDrawing.setDrawingData(drawing_view.toJSON());
-                newDrawing.width = width;
-                newDrawing.height = height;
-                drawingDAO.insertDrawing(newDrawing);
-            } else {
-                currentDrawing.setTitle(title);
-                currentDrawing.setDrawingData(drawing_view.toJSON());
-                drawingDAO.updateDrawing(currentDrawing);
-            }
-
             this.startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            // Go back to the Main activity
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
+
+        drawing_title.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Update Drawing's title
+                String title = s.toString();
+                if (currentDrawing == null) {
+                    currentDrawing = new Drawing(currentUser.getId());
+                    currentDrawing.width = width;
+                    currentDrawing.height = height;
+                    currentDrawing.Did = drawingDAO.insertDrawing(currentDrawing);
+                }
+                currentDrawing.setTitle(title);
+                drawingDAO.updateDrawing(currentDrawing);
+            }
+        });
+
+        // Brush
         container_chip_brush.setOnClickListener(v -> {
             drawing_view.setupPaint();
         });
-
+        // Color palette
         container_chip_colors.setOnClickListener(colorPickerClickListener);
-
+        // Eraser
         container_eraser.setOnClickListener(v -> {
             drawing_view.Eraser();
         });
 
+        // Save & Share button
+        save_button.setOnClickListener(v -> {
+            if (currentDrawing != null) {
+                currentDrawing.setDrawingData(drawing_view.toJSON());
+                Toast.makeText(context, R.string.exporting, Toast.LENGTH_LONG).show();
+                drawingDAO.updateDrawing(currentDrawing);
+                if (drawing_view.Export(drawing_view.getContext(), currentDrawing.title)) {
+                    Toast.makeText(context, R.string.exportTrue, Toast.LENGTH_LONG).show();
+                } else  Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
+            }
+            else Toast.makeText(context, R.string.noDrawing, Toast.LENGTH_LONG).show();
+        });
 
+    }
+
+    public void updateDrawing(String DrawingData) {
+        if (currentDrawing == null) {
+            currentDrawing = new Drawing(currentUser.getId());
+            currentDrawing.width = width;
+            currentDrawing.height = height;
+            currentDrawing.Did = drawingDAO.insertDrawing(currentDrawing);
+        }
+        currentDrawing.setDrawingData(DrawingData);
+        drawingDAO.updateDrawing(currentDrawing);
     }
 
     public int getWidth() {
