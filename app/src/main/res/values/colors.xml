@@ -4,4 +4,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="button">#FFFFFFFF</color>
     <color name="button_border">#FF000000</color>
+
+    <color name="pen_color">#FF000000</color>
 </resources>

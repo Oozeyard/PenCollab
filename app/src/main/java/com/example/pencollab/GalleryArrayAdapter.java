@@ -53,6 +53,7 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
         // Display the drawing
         DrawingView drawingView = new DrawingView(holder.itemView.getContext(), null);
         drawingView.setSize(currentDrawing.getWidth(), currentDrawing.getHeight());
+        Log.d("DrawingData", "onBindViewHolder: " + currentDrawing.getDrawingData());
         drawingView.fromJSON(currentDrawing.getDrawingData());
         holder.drawing_preview.addView(drawingView.getDrawingPreview());
 

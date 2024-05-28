@@ -156,6 +156,51 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/container_stroke_width"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/container_frame"
+                android:clipToPadding="false"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="11dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:paddingTop="11dp">
+
+                <FrameLayout
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:background="@drawable/container_shadow_icon">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="32dp"
+                        android:layout_gravity="center"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:singleLine="true"
+                        android:text="@string/loop_icon"
+                        android:textSize="20sp" />
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="start|center_vertical"
+                    android:includeFontPadding="false"
+                    android:maxLines="2"
+                    android:text="@string/size"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/container_eraser"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
@@ -202,6 +247,30 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+
+    <SeekBar
+        android:id="@+id/brush_size_slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:max="100" />
+
+    <View
+        android:id="@+id/brush_size_indicator"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circle"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/drawing_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/title"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:autofillHints="name"
+        android:inputType="textCapWords" />
 
     <com.example.pencollab.DrawingView
         android:id="@+id/drawinView"
