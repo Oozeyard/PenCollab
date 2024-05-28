@@ -1,6 +1,7 @@
 package com.example.pencollab.Activity;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -104,7 +105,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Handle activity change
         draw_layout.setOnClickListener(v -> startNewActivity(DrawingActivity.class));
-        join_layout.setOnClickListener(v -> startNewActivity(PreviewActivity.class));
+        join_layout.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
+            intent.putExtra("UserID", currentUser.getId());
+            v.getContext().startActivity(intent);
+        });
         discover_layout.setOnClickListener(v -> startNewActivity(DiscoverActivity.class));
 
         if (isregistered) view_profile_layout.setOnClickListener(v -> startNewActivity(ProfileActivity.class));

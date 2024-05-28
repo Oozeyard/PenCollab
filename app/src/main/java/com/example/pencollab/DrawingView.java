@@ -172,12 +172,18 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_UP:
                 touchUp();
                 invalidate();
+                updateDrawing();
                 break;
             default:
                 break;
         }
-        updateDrawing();
         return true;
+    }
+
+    @Override
+    public boolean performClick() {
+        // Override to avoid warning
+        return super.performClick();
     }
 
     private void updateDrawing() {

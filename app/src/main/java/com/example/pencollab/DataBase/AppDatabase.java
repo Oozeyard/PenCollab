@@ -12,6 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.DrawingUserDAO;
+import com.example.pencollab.DataBase.DAO.HistoryDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
 
 // Init Database
@@ -21,4 +22,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDAO userDAO();
     public abstract DrawingDAO drawingDAO();
     public abstract DrawingUserDAO drawingUserDAO();
+
+    public abstract HistoryDAO historyDAO();
 }

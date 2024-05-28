@@ -8,6 +8,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -197,6 +199,22 @@ public class DrawingActivity extends AppCompatActivity {
             } else {
                 brushSizeSlider.setVisibility(View.GONE);
                 brushSizeIndicator.setVisibility(View.GONE);
+            }
+        });
+
+        drawing_view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (brushSizeSlider.getVisibility() == View.VISIBLE) {
+                    brushSizeSlider.setVisibility(View.GONE);
+                    brushSizeIndicator.setVisibility(View.GONE);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    v.performClick(); // Handle click to avoid warning
+                }
+
+                return false; // False -> means that DrawingView can still process touch events for drawing.
             }
         });
 

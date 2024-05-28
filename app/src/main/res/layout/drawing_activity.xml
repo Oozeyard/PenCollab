@@ -39,7 +39,7 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="@string/drawing"
-            
+
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -282,7 +282,7 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="1dp"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="15dp">
 
 
         <Button
