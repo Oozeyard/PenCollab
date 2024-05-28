@@ -1,19 +1,18 @@
 package com.example.pencollab.Activity;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +22,8 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.pencollab.DataBase.DAO.DrawingUserDAO;
+import com.example.pencollab.DataBase.DrawingUser;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 
@@ -35,8 +36,6 @@ import com.example.pencollab.DataBase.User;
 import com.example.pencollab.DrawingView;
 import com.example.pencollab.R;
 
-import java.util.Objects;
-
 public class DrawingActivity extends AppCompatActivity {
 
     int width, height;
@@ -48,6 +47,8 @@ public class DrawingActivity extends AppCompatActivity {
     Context context;
     User currentUser;
     DrawingDAO drawingDAO;
+    UserDAO userDAO;
+    DrawingUserDAO drawingUserDAO;
 
     Drawing currentDrawing;
 
@@ -74,8 +75,9 @@ public class DrawingActivity extends AppCompatActivity {
         AppDatabase db = DatabaseHolder.getInstance(context);
 
         // Get DAO
-        UserDAO userDAO = db.userDAO();
+        userDAO = db.userDAO();
         drawingDAO = db.drawingDAO();
+        drawingUserDAO = db.drawingUserDAO();
 
         // Get current user
         currentUser = userDAO.getCurrentUser();
@@ -174,6 +176,10 @@ public class DrawingActivity extends AppCompatActivity {
             else Toast.makeText(context, R.string.noDrawing, Toast.LENGTH_LONG).show();
         });
 
+        share_button.setOnClickListener(v -> {
+            share_drawing();
+        });
+
     }
 
     public void updateDrawing(String DrawingData) {
@@ -185,6 +191,67 @@ public class DrawingActivity extends AppCompatActivity {
         }
         currentDrawing.setDrawingData(DrawingData);
         drawingDAO.updateDrawing(currentDrawing);
+    }
+
+    // Share button UI
+    public void share_drawing() {
+        final EditText input = new EditText(this);
+        final CheckBox visibilityCheckbox = new CheckBox(this);
+        visibilityCheckbox.setText(R.string.Visibility);
+        visibilityCheckbox.setChecked(currentDrawing.getVisibility());
+
+        // Layout for both sharing
+        LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(input);
+        layout.addView(visibilityCheckbox);
+
+        // AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.share);
+        builder.setMessage(R.string.username);
+        builder.setView(layout);
+
+        // button
+        builder.setPositiveButton(R.string.share, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String username = input.getText().toString();
+
+                if (!username.isEmpty()){
+                    User invitedUser = userDAO.getUserByUsername(username);
+                    // Check if the user exist and isn't himself
+                    if (invitedUser == null || invitedUser.getId() == 1 || invitedUser.username.equals(currentUser.username))
+                        Toast.makeText(context, R.string.user_doesnt_exist, Toast.LENGTH_LONG).show();
+                    else {
+                        // Add to db
+                        DrawingUser sharedDrawing = new DrawingUser(currentDrawing.getId(), invitedUser.getId());
+                        drawingUserDAO.insertCross(sharedDrawing);
+                        String message = R.string.shared_with + invitedUser.getUsername();
+                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                    }
+                }
+                else Toast.makeText(context, R.string.enter_other_username, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        visibilityCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                currentDrawing.setVisibility(isChecked);
+                drawingDAO.updateDrawing(currentDrawing);
+            }
+        });
+
+        // show
+        builder.show();
     }
 
     public int getWidth() {

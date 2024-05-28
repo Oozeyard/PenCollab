@@ -8,7 +8,10 @@ import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "Users",
-        indices = {@Index(value = "email", unique = true)})
+        indices = {
+                @Index(value = "email", unique = true),
+                @Index(value = "username", unique = true)
+        })
 public class User {
     @PrimaryKey(autoGenerate = true)
     public long Uid;
@@ -17,6 +20,7 @@ public class User {
     public String username, email, password;
     public boolean isPremium, isCurrentUser;
 
+    @Ignore
     public User() {
         this.username = "User";
         this.email = "none";

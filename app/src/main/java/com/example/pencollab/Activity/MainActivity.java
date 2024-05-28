@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pencollab.DataBase.AppDatabase;
+import com.example.pencollab.DataBase.DAO.DrawingUserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
@@ -36,10 +37,8 @@ public class MainActivity extends AppCompatActivity {
     TextView profile_button, txt_user_name, txt_user_status;
     RecyclerView recyclerView_pictures;
     ArrayList<Drawing> drawings;
-
-    //private AppDatabase db;
-    //private UserDAO userDAO;
-    private DrawingDAO drawingDAO;
+    DrawingDAO drawingDAO;
+    DrawingUserDAO drawingUserDAO;
 
     User currentUser;
     long currentUserId;
@@ -67,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         // Get DAO
         UserDAO userDAO = db.userDAO();
         drawingDAO = db.drawingDAO();
+        drawingUserDAO = db.drawingUserDAO();
 
         //userDAO.nukeTable(); ca nettoie bien
 
@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity {
             profile_button.setText(R.string.view_profile);
             join_layout.setVisibility(View.VISIBLE);
             isregistered = true;
-            txt_user_status.setText(R.string.registered);
+            if (currentUser.isPremium) txt_user_status.setText(R.string.premium);
+            else txt_user_status.setText(R.string.registered);
         }
 
         txt_user_name.setText(currentUser.getUsername()); // write the user name
@@ -138,7 +139,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void updateRecycler() {
-        drawings = new ArrayList<>(drawingDAO.getDrawingsByOwnerID(currentUserId));
+        List<Drawing> userDrawing = drawingDAO.getDrawingsByOwnerID(currentUserId);
+        drawings = new ArrayList<>();
+        drawings.addAll(userDrawing);
+
+        List<Long> sharedDrawingIDs = drawingUserDAO.getSharedDrawingID(currentUserId);
+        if (sharedDrawingIDs != null) {
+            List<Drawing> sharedDrawing = drawingDAO.getDrawingsByIDs(sharedDrawingIDs);
+            drawings.addAll(sharedDrawing);
+        }
+
         recyclerView_pictures.setAdapter(new GalleryArrayAdapter(drawings, this));
     }
 }

@@ -22,8 +22,12 @@ public interface DrawingDAO {
 
     @Query("SELECT * FROM Drawings WHERE Did = :Did")
     Drawing getDrawingByID(long Did);
+    @Query("SELECT * FROM Drawings WHERE Did IN (:Did)")
+    List<Drawing> getDrawingsByIDs(List<Long> Did);
     @Query("SELECT * FROM Drawings WHERE isPublic = true")
     List<Drawing> getPublicDrawings();
+    @Query("SELECT * FROM Drawings WHERE isPublic = true AND title = :title")
+    List<Drawing> getPublicDrawingsByName(String title);
     @Query("SELECT * FROM Drawings WHERE ownerId = :ownerId")
     List<Drawing> getDrawingsByOwnerID(long ownerId);
     @Query("SELECT OwnerId FROM Drawings WHERE Did = :Did")

@@ -21,9 +21,11 @@ public interface UserDAO {
     void deleteUser(User user);
 
     @Query("SELECT * FROM Users WHERE Uid = :Uid")
-    User getUserByID(int Uid);
+    User getUserByID(long Uid);
+    @Query("SELECT * FROM Users WHERE Username = :name")
+    User getUserByUsername(String name);
     @Query("SELECT isPremium FROM Users WHERE Uid = :Uid")
-    boolean getPremiumByID(long Uid);
+    boolean isPremiumByID(long Uid);
     @Query("SELECT * FROM Users WHERE email = :email")
     User getUserByEmail(String email);
     @Query("SELECT * FROM Users WHERE isCurrentUser = 1 LIMIT 1")

@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -18,7 +19,6 @@ import java.util.Date;
 
 
 @Entity(tableName = "Drawings",
-        indices = {@Index(value = "Did", unique = true)},
         foreignKeys = @ForeignKey(entity = User.class,
                                 parentColumns = "Uid",
                                 childColumns = "OwnerId",
@@ -26,7 +26,7 @@ import java.util.Date;
 public class Drawing {
     @PrimaryKey(autoGenerate = true)
     public long Did;
-
+    @ColumnInfo(index = true)
     public long OwnerId;
     public String title;
     public String drawingData; // Data (JSON)
@@ -49,6 +49,9 @@ public class Drawing {
 
     public void setDrawingData(String drawingData) { this.drawingData = drawingData; }
     public String getDrawingData() { return drawingData; }
+
+    public void setVisibility(boolean visibility) { this.isPublic = visibility; }
+    public boolean getVisibility() { return isPublic; }
 
     public int getWidth() {
         return width;

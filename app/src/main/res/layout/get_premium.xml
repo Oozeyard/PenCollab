@@ -140,7 +140,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/button_sign_up"
+                android:id="@+id/button_buy"
                 android:layout_width="329dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"

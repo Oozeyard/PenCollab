@@ -39,7 +39,7 @@
             android:includeFontPadding="false"
             android:maxLines="1"
             android:singleLine="true"
-            android:text="Dessin1"
+            android:text="Unknown"
             android:textSize="20sp" />
     </LinearLayout>
 
@@ -121,7 +121,7 @@
                     android:layout_height="match_parent"
                     android:gravity="start|center_vertical"
                     android:maxLines="1"
-                    android:text="By: Pascal Chuchote"
+                    android:text="By: Unknown"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -137,7 +137,7 @@
                 android:layout_height="40dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="end|top"
-                android:text="Created on: 06/25/2021"
+                android:text="Created on: XXX"
                 android:textSize="14sp" />
 
         </LinearLayout>
@@ -189,7 +189,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="8x10 cm"
+                android:text="Unknown"
                 android:textSize="14sp" />
 
         </LinearLayout>

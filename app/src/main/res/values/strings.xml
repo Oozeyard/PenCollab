@@ -17,6 +17,8 @@
     <string name="pricing">Pricing :</string>
     <string name="price">4.99$/month</string>
     <string name="buy">Buy Now !</string>
+    <string name="ispremium">You are already Premium, thank you !</string>
+    <string name="nowpremium">You are now premium, Welcome !</string>
 
     <string name="login">Log In</string>
     <string name="username">Username</string>
@@ -42,13 +44,17 @@
     <string name="empty"/>
 
     <!-- AlertDialogue -->
-    <string name="select">SELECT</string>
-    <string name="cancel">CANCEL</string>
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
     <string name="delete_ask">Do you want to delete this drawing ?</string>
     <string name="color_ask">Select a color</string>
     <string name="empty_fields">One or more fields are empty.</string>
     <string name="user_already_exist">This User already exist</string>
     <string name="user_doesnt_exist">This user doesn\'t exist</string>
+    <string name="send">Send</string>
+    <string name="shared_with">shared with :</string>
+    <string name="enter_other_username">Please enter an username</string>
+    <string name="Visibility">Visibility</string>
 
     <!--  Icon  -->
     <string name="palette_icon">🎨</string>
@@ -57,6 +63,7 @@
     <string name="brush_icon">🖌️</string>
     <string name="rule_icon">📏</string>
 
+    <!-- Export -->
     <string name="exporting">Exporting image</string>
     <string name="exportTrue">Image exported successfully</string>
     <string name="noDrawing">No Drawing found</string>
