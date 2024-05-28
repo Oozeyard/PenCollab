@@ -5,11 +5,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.graphics.PathMeasure;
-import android.graphics.PointF;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
@@ -20,32 +19,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.pencollab.Activity.DrawingActivity;
-import com.example.pencollab.DataBase.Drawing;
 import com.google.gson.Gson;
 
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.drawable.Drawable;
 import android.util.Base64;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.graphics.PathParser;
-
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DrawingView extends View {
     private static final float TOUCH_TOLERANCE = 4;
@@ -160,7 +144,6 @@ public class DrawingView extends View {
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
@@ -193,7 +176,16 @@ public class DrawingView extends View {
             default:
                 break;
         }
+        updateDrawing();
         return true;
+    }
+
+    private void updateDrawing() {
+        Context context = getContext();
+        if (context instanceof DrawingActivity) {
+            DrawingActivity drawingActivity = (DrawingActivity) context;
+            drawingActivity.updateDrawing(toJSON());
+        }
     }
 
     public void initializePen() {
@@ -235,7 +227,7 @@ public class DrawingView extends View {
                     );
 
                     // Appliquer la matrice au bitmap
-                    @SuppressLint("DrawAllocation") Bitmap scaledBitmap = Bitmap.createBitmap(loadBitmap, 0, 0, loadBitmap.getWidth(), loadBitmap.getHeight(), matrix, true);
+                    Bitmap scaledBitmap = Bitmap.createBitmap(loadBitmap, 0, 0, loadBitmap.getWidth(), loadBitmap.getHeight(), matrix, true);
 
                     // Dessiner le bitmap mis à l'échelle sur le canvas
                     canvas.drawBitmap(scaledBitmap, 0, 0, bitmapPaint);
@@ -276,15 +268,6 @@ public class DrawingView extends View {
 
     // Export the drawing into a PNG file
     public boolean Export(@NonNull Context context, @NonNull String title) {
-        Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-
-        // Draw the paths
-        for (SerializedPath serializedPath : paths) {
-            drawPaint.setColor(serializedPath.color);
-            canvas.drawPath(serializedPath.getPath(), drawPaint);
-        }
-
         // Save the Bitmap to a file
         String fileName = title + ".png";
         OutputStream fos;

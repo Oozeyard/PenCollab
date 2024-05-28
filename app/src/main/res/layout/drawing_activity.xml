@@ -262,16 +262,6 @@
         android:background="@drawable/circle"
         android:visibility="gone" />
 
-    <EditText
-        android:id="@+id/drawing_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/title"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:autofillHints="name"
-        android:inputType="textCapWords" />
-
     <com.example.pencollab.DrawingView
         android:id="@+id/drawinView"
         android:layout_width="match_parent"

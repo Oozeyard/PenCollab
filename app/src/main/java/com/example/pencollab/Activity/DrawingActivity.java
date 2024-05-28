@@ -58,15 +58,11 @@ public class DrawingActivity extends AppCompatActivity {
 
     Drawing currentDrawing;
 
-    Context context;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.drawing_activity);
-
-        context = this;
 
         back_arrow = findViewById(R.id.back_arrow);
         drawing_view = findViewById(R.id.drawinView);
@@ -188,6 +184,8 @@ public class DrawingActivity extends AppCompatActivity {
                 } else  Toast.makeText(context, "Error", Toast.LENGTH_LONG).show();
             }
             else Toast.makeText(context, R.string.noDrawing, Toast.LENGTH_LONG).show();
+        });
+
         container_stroke_width.setOnClickListener(v -> {
             if (brushSizeSlider.getVisibility() == View.GONE) {
                 int Size = (int) drawing_view.getPenSize();
