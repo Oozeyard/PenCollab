@@ -39,6 +39,7 @@
     <string name="search">Search</string>
     <string name="title">Title</string>
     <string name="delete">Delete</string>
+    <string name="size">Size</string>
     <string name="empty"/>
 
     <!-- AlertDialogue -->
@@ -56,6 +57,8 @@
     <string name="picture_icon">🖼️</string>
     <string name="brush_icon">🖌️</string>
     <string name="rule_icon">📏</string>
+    <string name="loop_icon">🔎</string>
+
 
 
 </resources>

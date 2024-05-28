@@ -1,19 +1,21 @@
 package com.example.pencollab.Activity;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
-import android.content.DialogInterface;
-import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import com.skydoves.colorpickerview.ColorPickerDialog;
@@ -29,13 +31,16 @@ import com.example.pencollab.R;
 
 public class DrawingActivity extends AppCompatActivity {
 
-    int width, height;
+    int width, height, color;
     ImageView back_arrow;
     EditText drawing_title;
     DrawingView drawing_view;
-    LinearLayout container_buttons, container_chip_brush, container_chip_colors, container_eraser;
-
+    LinearLayout container_buttons, container_chip_brush, container_chip_colors, container_stroke_width, container_eraser;
+    private SeekBar brushSizeSlider;
+    private View brushSizeIndicator;
     Drawing currentDrawing;
+
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +48,19 @@ public class DrawingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.drawing_activity);
 
+        context = this;
+
         back_arrow = findViewById(R.id.back_arrow);
         drawing_view = findViewById(R.id.drawinView);
         drawing_title = findViewById(R.id.drawing_title);
         container_buttons = findViewById(R.id.container_button_share_and_save);
         container_chip_brush = findViewById(R.id.container_chip_brush);
         container_chip_colors = findViewById(R.id.container_chip_colors);
+        container_stroke_width = findViewById(R.id.container_stroke_width);
         container_eraser = findViewById(R.id.container_eraser);
 
+        brushSizeSlider = findViewById(R.id.brush_size_slider);
+        brushSizeIndicator = findViewById(R.id.brush_size_indicator);
 
         // Get Database
         AppDatabase db = DatabaseHolder.getInstance(getApplicationContext());
@@ -115,17 +125,50 @@ public class DrawingActivity extends AppCompatActivity {
         });
 
         container_chip_brush.setOnClickListener(v -> {
-            drawing_view.setupPaint();
+            drawing_view.initializePen();
         });
 
         container_chip_colors.setOnClickListener(colorPickerClickListener);
 
         container_eraser.setOnClickListener(v -> {
-            drawing_view.Eraser();
+            Toast.makeText(this, "Erases", Toast.LENGTH_SHORT).show();
+            drawing_view.initializeEraser();
         });
 
+        container_stroke_width.setOnClickListener(v -> {
+            if (brushSizeSlider.getVisibility() == View.GONE) {
+                int Size = (int) drawing_view.getPenSize();
+                brushSizeIndicator.getLayoutParams().width = Size;
+                brushSizeIndicator.getLayoutParams().height = Size;
+                brushSizeSlider.setProgress(Size);
+                brushSizeSlider.setVisibility(View.VISIBLE);
+                brushSizeIndicator.setVisibility(View.VISIBLE);
+            } else {
+                brushSizeSlider.setVisibility(View.GONE);
+                brushSizeIndicator.setVisibility(View.GONE);
+            }
+        });
+
+        brushSizeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                float brushSize = progress + 1; // To avoid a size of 0
+                drawing_view.setPenSize(brushSize);
+                updateBrushSizeIndicator(brushSize);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
 
     }
+
+
 
     public int getWidth() {
         return width;
@@ -143,9 +186,12 @@ public class DrawingActivity extends AppCompatActivity {
                     .setPreferenceName("MyColorPickerDialog")
                     .setPositiveButton(R.string.select, (ColorEnvelopeListener) (envelope, fromUser) -> {
                         // get selected color
-                        int color = envelope.getColor();
+                        color = envelope.getColor();
                         // use the color
                         drawing_view.setDrawingColor(color);
+
+                        GradientDrawable background = (GradientDrawable) brushSizeIndicator.getBackground();
+                        background.setColor(color);
                     })
                     .setNegativeButton(R.string.cancel, (dialogInterface, i) -> dialogInterface.dismiss())
                     .attachAlphaSlideBar(true) // Opacity
@@ -153,4 +199,11 @@ public class DrawingActivity extends AppCompatActivity {
                     .show();
         }
     };
+
+    private void updateBrushSizeIndicator(float size) {
+        ViewGroup.LayoutParams params = brushSizeIndicator.getLayoutParams();
+        params.width = (int) size;
+        params.height = (int) size;
+        brushSizeIndicator.setLayoutParams(params);
+    }
 }

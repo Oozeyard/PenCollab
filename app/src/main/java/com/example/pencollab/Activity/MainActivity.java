@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.main_menu_activity);
 
+
         // Get view
         draw_layout = findViewById(R.id.container_draw);
         join_layout = findViewById(R.id.container_join);

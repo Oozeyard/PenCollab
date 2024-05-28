@@ -2,7 +2,8 @@ package com.example.pencollab;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -12,60 +13,99 @@ import android.graphics.PathMeasure;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
-import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.PathParser;
+
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DrawingView extends View {
-
-
-    private final ArrayList<SerializedPath> paths = new ArrayList<>();
+    private static final float TOUCH_TOLERANCE = 4;
+    private Bitmap bitmap, loadBitmap = null;
+    private Canvas canvas;
+    private Path path;
+    private Paint bitmapPaint;
     private Paint drawPaint;
-    private boolean isEraserMode = false; // Flag to indicate eraser mode
+    private boolean isEraserMode;
+    private float x, y;
+    private float penSize = 10; // Taille du trait par défaut
+    private float eraserSize = 10; // Taille de la gomme par défaut
     private int Widht, Height;
+    private int color = Color.BLACK;
 
-    private float eraserSize = 20;
 
     public DrawingView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        //setBackgroundColor(Color.WHITE);
-        setupPaint();
+        init();
     }
 
-    public void setSize(int widht, int height) {
-        Widht = widht;
-        Height = height;
-    }
-
-    public void setupPaint() {
+    public void init() {
+        path = new Path();
         drawPaint = new Paint();
+        bitmapPaint = new Paint(Paint.DITHER_FLAG);
         drawPaint.setAntiAlias(true);
+        drawPaint.setColor(color);
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
-        drawPaint.setStrokeWidth(20); // Taille du trait
+        drawPaint.setStrokeWidth(penSize);
+        isEraserMode = false;
+        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
     }
 
-    public void Eraser() {
-        isEraserMode = true;
+    @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (bitmap == null) {
+            bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        }
+        canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.TRANSPARENT);
+
+        if (loadBitmap != null) canvas.drawBitmap(loadBitmap, 0, 0, bitmapPaint);
     }
 
-    public void setEraserSize(float size) {
-        eraserSize = size;
-        Eraser();
+    public int getColor() { return color; }
+    public float getPenSize() { return penSize; }
+
+    public void setSize(int width, int height) {
+        Widht = width;
+        Height = height;
+        if (bitmap == null) {
+            bitmap = Bitmap.createBitmap(Widht, Height, Bitmap.Config.ARGB_8888);
+        }
+        canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.TRANSPARENT);
+
     }
 
     public void setDrawingColor(int color) {
-        //drawPaint.setXfermode(null); // Reset Xfermode
-        drawPaint.setColor(color);
+        this.color = color;
+        initializePen();
+    }
+
+    public void setPenSize(float penSize) {
+        this.penSize = penSize;
+        this.eraserSize = penSize;
+        if(isEraserMode) initializeEraser();
+        else initializePen();
+    }
+
+    public void setEraserMode(boolean eraserMode) {
+        this.isEraserMode = eraserMode;
+        initializeEraser();
     }
 
 
@@ -73,113 +113,151 @@ public class DrawingView extends View {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        for (SerializedPath serializedPath : paths) {
-            drawPaint.setColor(serializedPath.color);
-            canvas.drawPath(serializedPath.getPath(), drawPaint);
+        canvas.drawBitmap(bitmap, 0, 0, bitmapPaint);
+        canvas.drawPath(path, drawPaint);
+    }
+
+    private void touchStart(float x, float y) {
+        path.reset();
+        path.moveTo(x, y);
+        this.x = x;
+        this.y = y;
+        canvas.drawPath(path, drawPaint);
+    }
+
+    private void touchMove(float x, float y) {
+        float dx = Math.abs(x - this.x);
+        float dy = Math.abs(y - this.y);
+        if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
+            path.quadTo(this.x, this.y, (x + this.x) / 2, (y + this.y) / 2);
+            this.x = x;
+            this.y = y;
+        }
+        canvas.drawPath(path, drawPaint);
+    }
+
+    private void touchUp() {
+        path.lineTo(x, y);
+        canvas.drawPath(path, drawPaint);
+        path.reset();
+        if (isEraserMode) {
+            drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        } else {
+            drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float touchX = event.getX();
-        float touchY = event.getY();
+        float x = event.getX();
+        float y = event.getY();
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                Path newPath = new Path();
-                newPath.moveTo(touchX, touchY);
-                paths.add(new SerializedPath(newPath, drawPaint.getColor()));
-                return true;
+                if (isEraserMode) {
+                    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                } else {
+                    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+                }
+                touchStart(x, y);
+                invalidate();
+                break;
             case MotionEvent.ACTION_MOVE:
-                SerializedPath currentPath = paths.get(paths.size() - 1);
-                currentPath.addPoint(touchX, touchY);
+                touchMove(x, y);
+                if (isEraserMode) {
+                    path.lineTo(this.x, this.y);
+                    path.reset();
+                    path.moveTo(x, y);
+                }
+                canvas.drawPath(path, drawPaint);
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                touchUp();
+                invalidate();
                 break;
             default:
-                return false;
+                break;
         }
-
-        invalidate();
         return true;
+    }
+
+    public void initializePen() {
+        isEraserMode = false;
+        drawPaint.setAntiAlias(true);
+        drawPaint.setColor(color);
+        drawPaint.setStyle(Paint.Style.STROKE);
+        drawPaint.setStrokeJoin(Paint.Join.ROUND);
+        drawPaint.setStrokeCap(Paint.Cap.ROUND);
+        drawPaint.setStrokeWidth(penSize);
+        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+    }
+
+    public void initializeEraser() {
+        isEraserMode = true;
+        //drawPaint.setColor(Color.parseColor("#f4f4f4"));
+        drawPaint.setStyle(Paint.Style.STROKE);
+        drawPaint.setStrokeWidth(eraserSize);
+        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+    }
+
+    public void clear() {
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        invalidate();
     }
 
     public View getDrawingPreview() {
         return new View(getContext()) {
             @Override
-            protected void onDraw(Canvas canvas) {
+            protected void onDraw(@NonNull Canvas canvas) {
                 super.onDraw(canvas);
 
-                Log.d("drawing", "original w h : " + getWidth() + " " + getHeight());
+                if (loadBitmap != null) {
+                    // Créer une matrice de mise à l'échelle
+                    Matrix matrix = new Matrix();
+                    matrix.postScale(
+                            (float) getWidth() / Widht,
+                            (float) getHeight() / Height
+                    );
 
+                    // Appliquer la matrice au bitmap
+                    @SuppressLint("DrawAllocation") Bitmap scaledBitmap = Bitmap.createBitmap(loadBitmap, 0, 0, loadBitmap.getWidth(), loadBitmap.getHeight(), matrix, true);
 
-                Matrix matrix = new Matrix();
-                matrix.setScale(
-                        (float) getWidth() / Widht,
-                        (float) getHeight() / Height
-                );
-
-                // Appliquer la matrice à chaque chemin avant de le dessiner
-                for (SerializedPath serializedPath : paths) {
-                    Path scaledPath = new Path(serializedPath.getPath());
-                    scaledPath.transform(matrix);
-                    drawPaint.setColor(serializedPath.color);
-                    canvas.drawPath(scaledPath, drawPaint);
+                    // Dessiner le bitmap mis à l'échelle sur le canvas
+                    canvas.drawBitmap(scaledBitmap, 0, 0, bitmapPaint);
                 }
+
+                //canvas.drawPath(path, drawPaint);
 
             }
         };
     }
 
 
+
     public String toJSON() {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        String encodedBitmap = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
         Gson gson = new Gson();
-        return gson.toJson(paths);
+        JsonObject jsonObject = new JsonObject();
+        jsonObject.addProperty("bitmap", encodedBitmap);
+
+        return gson.toJson(jsonObject);
     }
 
-    public void fromJSON(String json) {
+    public void fromJSON(String jsonString) {
         Gson gson = new Gson();
-        SerializedPath[] deserializedPaths = gson.fromJson(json, SerializedPath[].class);
-        paths.clear();
-        for (SerializedPath serializedPath : deserializedPaths) {
-            paths.add(serializedPath);
-        }
-        invalidate();
-    }
+        JsonObject jsonObject = gson.fromJson(jsonString, JsonObject.class);
+        String encodedBitmap = jsonObject.get("bitmap").getAsString();
 
-    public class SerializedPath {
-        private final ArrayList<PointF> points;
-        private final int color;
+        byte[] decodedBytes = Base64.decode(encodedBitmap, Base64.DEFAULT);
 
-        public SerializedPath(Path path, int color) {
-            this.color = color;
-            this.points = new ArrayList<>();
-            PathMeasure measure = new PathMeasure(path, false);
-            float[] coords = new float[2];
-            for (float i = 0; i < measure.getLength(); i += 1) {
-                measure.getPosTan(i, coords, null);
-                points.add(new PointF(coords[0], coords[1]));
-            }
-        }
-
-        public Path getPath() {
-            Path path = new Path();
-            if (!points.isEmpty()) {
-                PointF startPoint = points.get(0);
-                path.moveTo(startPoint.x, startPoint.y);
-                for (int i = 1; i < points.size(); i++) {
-                    PointF point = points.get(i);
-                    path.lineTo(point.x, point.y);
-                }
-            }
-            return path;
-        }
-
-        public int getColor() {
-            return color;
-        }
-
-        public void addPoint(float x, float y) {
-            points.add(new PointF(x, y));
-        }
+        loadBitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
     }
 
 }
