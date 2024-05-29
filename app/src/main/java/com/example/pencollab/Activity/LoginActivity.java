@@ -83,12 +83,12 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             if (!usernameS.equals(user.getUsername())) {
-                showAlert("Error: wrong username");
+                showAlert(getString(R.string.wrong_username));
                 return;
             }
 
             if (!passwordS.equals(user.getPassword())) {
-                showAlert("Error: wrong password");
+                showAlert(getString(R.string.wrong_password));
                 return;
             }
 

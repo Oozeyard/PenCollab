@@ -115,16 +115,16 @@ public class MainActivity extends AppCompatActivity {
         if (isregistered) view_profile_layout.setOnClickListener(v -> startNewActivity(ProfileActivity.class));
         else view_profile_layout.setOnClickListener(v -> startNewActivity(LoginActivity.class));
 
-        premium_button.setOnClickListener(v -> startNewActivity(GetPremiumActivity.class));
+        if(currentUser.getPremium()) premium_button.setVisibility(View.INVISIBLE);
+        else premium_button.setVisibility(View.VISIBLE);
 
+        premium_button.setOnClickListener(v -> startNewActivity(GetPremiumActivity.class));
 
         // Set up gallery list
         recyclerView_pictures = findViewById(R.id.container_gallery);
         recyclerView_pictures.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         updateRecycler();
-
-        //List<User> userList = userDAO.getAll();
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             // Close app
@@ -135,7 +135,6 @@ public class MainActivity extends AppCompatActivity {
         };
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
 
-        //for (User user : userList) Log.d("User", "ID: " + user.getId() + ", Name: " + user.getUsername() + ", Mail: " + currentUser.getEmail());
     }
 
     private void startNewActivity(Class<?> classActivity) {
@@ -147,12 +146,6 @@ public class MainActivity extends AppCompatActivity {
         List<Drawing> userDrawing = drawingDAO.getDrawingsByOwnerID(currentUserId);
         drawings = new ArrayList<>();
         drawings.addAll(userDrawing);
-
-        List<Long> sharedDrawingIDs = drawingUserDAO.getSharedDrawingID(currentUserId);
-        if (sharedDrawingIDs != null) {
-            List<Drawing> sharedDrawing = drawingDAO.getDrawingsByIDs(sharedDrawingIDs);
-            drawings.addAll(sharedDrawing);
-        }
 
         recyclerView_pictures.setAdapter(new GalleryArrayAdapter(this, drawings));
     }

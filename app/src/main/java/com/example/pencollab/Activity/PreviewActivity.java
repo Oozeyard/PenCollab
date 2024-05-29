@@ -81,17 +81,24 @@ public class PreviewActivity extends AppCompatActivity {
         });
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
-            // Go back to the Main activity
+            // Go back to the Discover Activity
             @Override
             public void handleOnBackPressed() {
                 Intent intent;
-                /*if (isProvideDiscoverActivity) intent = new Intent(context, DiscoverActivity.class);
-                else*/ intent = new Intent(context, MainActivity.class);
+                if (isProvideDiscoverActivity) intent = new Intent(context, DiscoverActivity.class);
+                else intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         };
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
+
+        button_join.setOnClickListener(v -> {
+            intent = new Intent(context, DrawingActivity.class);
+            intent.putExtra("DrawingID", currentDrawing.getId());
+            startActivity(intent);
+            finish();
+        });
     }
 
     void UpdateInformation() {

@@ -34,7 +34,7 @@ public class DiscoverActivity extends AppCompatActivity {
 
     Context context;
     ImageView back_arrow;
-    ListView list_discover;
+    ListView discover_list;
     EditText search_bar;
     UserDAO userDAO;
     DrawingDAO drawingDAO;
@@ -46,6 +46,7 @@ public class DiscoverActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.discover_activity);
 
+        // Get context
         context = getApplicationContext();
 
         // Get Database
@@ -59,10 +60,27 @@ public class DiscoverActivity extends AppCompatActivity {
         search_bar = findViewById(R.id.search_bar);
 
         // Set up discover list
-        list_discover = findViewById(R.id.list_discover);
+        discover_list = findViewById(R.id.discover_list);
+
+        // Show public drawing
+        ArrayList<Drawing> public_drawings = new ArrayList<>(drawingDAO.getPublicDrawings());
+        discover_list.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, public_drawings));
+
+        discover_list.setOnItemClickListener((parent, view, position, id) -> {
+            Drawing drawing = (Drawing) parent.getItemAtPosition(position);
+            User user = userDAO.getUserByID(drawing.getOwnerId());
+
+            Intent intent = new Intent(context, PreviewActivity.class);
+            intent.putExtra("DrawingID", drawing.getId());
+            intent.putExtra("UserID", user.getId());
+            intent.putExtra("isDicoverActivity", true);
+            startActivity(intent);
+            finish();
+        });
+
 
         back_arrow.setOnClickListener(v -> {
-            this.startActivity(new Intent(this, MainActivity.class));
+            this.startActivity(new Intent(context, MainActivity.class));
             finish();
         });
 
@@ -90,23 +108,6 @@ public class DiscoverActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        // Show public drawing
-        ArrayList<Drawing> public_drawings = new ArrayList<>(drawingDAO.getPublicDrawings());
-        list_discover.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, public_drawings));
 
-        list_discover.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Drawing drawing = (Drawing) parent.getItemAtPosition(position);
-                User user = userDAO.getUserByID(drawing.getOwnerId());
-
-                Intent intent = new Intent(context, PreviewActivity.class);
-                intent.putExtra("DrawingID", drawing.getId());
-                intent.putExtra("UserID", user.getId());
-                intent.putExtra("isDicoverActivity", true);
-                startActivity(intent);
-                finish();
-            }
-        });
     }
 }

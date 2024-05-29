@@ -58,6 +58,8 @@
     <string name="empty_fields">One or more fields are empty.</string>
     <string name="user_already_exist">This User already exist</string>
     <string name="user_doesnt_exist">This user doesn\'t exist</string>
+    <string name="wrong_username">"Error: wrong username"</string>
+    <string name="wrong_password">"Error: wrong password"</string>
     <string name="send">Send</string>
     <string name="shared_with">shared with:</string>
     <string name="enter_other_username">Please enter an username</string>

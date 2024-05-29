@@ -49,6 +49,7 @@
             android:paddingBottom="10dp"
             android:singleLine="true"
             android:text="@string/empty"
+            android:visibility="gone"
             android:textSize="17sp" />
 
     </LinearLayout>

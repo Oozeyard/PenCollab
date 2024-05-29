@@ -28,33 +28,39 @@ public class GetPremiumActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.get_premium);
 
+        // Get context
         context = getApplicationContext();
+
+        // Get Database
         AppDatabase db = DatabaseHolder.getInstance(context);
+
+        // Get DAO
         UserDAO userDAO = db.userDAO();
 
+        // Get current user
         currentUser = userDAO.getCurrentUser();
 
         back_arrow = findViewById(R.id.back_arrow);
         buy_button = findViewById(R.id.button_buy);
 
         back_arrow.setOnClickListener(v -> {
-            this.startActivity(new Intent(this, MainActivity.class));
+            this.startActivity(new Intent(context, MainActivity.class));
             finish();
         });
 
         buy_button.setOnClickListener(v -> {
             if (currentUser.getId() <= 1) {
-                Toast.makeText(context, R.string.unregistered, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, getString(R.string.unregistered), Toast.LENGTH_LONG).show();
             }
             else if (currentUser.isPremium) {
-                Toast.makeText(context, R.string.ispremium, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, getString(R.string.ispremium), Toast.LENGTH_LONG).show();
             }
             else {
                 currentUser.isPremium = true;
                 userDAO.updateUser(currentUser);
-                Toast.makeText(context, R.string.nowpremium, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, getString(R.string.nowpremium), Toast.LENGTH_LONG).show();
             }
-            this.startActivity(new Intent(this, MainActivity.class));
+            this.startActivity(new Intent(context, MainActivity.class));
             finish();
         });
     }

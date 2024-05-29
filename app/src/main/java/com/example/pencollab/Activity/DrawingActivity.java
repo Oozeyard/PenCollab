@@ -71,6 +71,9 @@ public class DrawingActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.drawing_activity);
 
+        // Get context
+        context = getApplicationContext();
+
         back_arrow = findViewById(R.id.back_arrow);
         drawing_view = findViewById(R.id.drawinView);
         drawing_title = findViewById(R.id.drawing_title);
@@ -82,8 +85,6 @@ public class DrawingActivity extends AppCompatActivity {
         save_button = findViewById(R.id.button_save);
         share_button = findViewById(R.id.button_share);
         history_button = findViewById(R.id.history_button);
-
-        context = getApplicationContext();
 
         container_stroke_width_slider = findViewById(R.id.container_stroke_width_slider);
         brushSizeSlider = findViewById(R.id.brush_size_slider);
@@ -115,6 +116,7 @@ public class DrawingActivity extends AppCompatActivity {
                 width = drawing_view.getWidth();
                 height = drawing_view.getHeight();
 
+                // Default size and color of the indicator and the slider size
                 GradientDrawable background = (GradientDrawable) brushSizeIndicator.getBackground();
                 background.setColor(Color.BLACK);
                 int Size = (int) drawing_view.getPenSize();
@@ -124,12 +126,9 @@ public class DrawingActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         // Get the drawing
         if (intent != null && intent.getExtras() != null) {
-            long drawingID = intent.getLongExtra("DrawingID", 0);
+            long drawingID = intent.getLongExtra("DrawingID", -1);
             currentDrawing = drawingDAO.getDrawingByID(drawingID);
             drawing_title.setText(currentDrawing.getTitle());
             drawing_view.fromJSON(currentDrawing.getDrawingData());
@@ -147,7 +146,7 @@ public class DrawingActivity extends AppCompatActivity {
         }
 
         // Listener
-        // back arrow
+        // Back arrow
         back_arrow.setOnClickListener(v -> {
             if (currentUser.isPremium && isModified) {
                 // Save history
@@ -168,7 +167,7 @@ public class DrawingActivity extends AppCompatActivity {
                     History history = new History(currentUser.getId(), currentDrawing.getId(), currentDrawing.getDrawingData());
                     historyDAO.insertHistory(history);
                 }
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -178,7 +177,7 @@ public class DrawingActivity extends AppCompatActivity {
         // History Button
         history_button.setOnClickListener(v -> {
             // Launch Activity
-            Intent intentH = new Intent(getApplicationContext(), HistoryActivity.class);
+            Intent intentH = new Intent(context, HistoryActivity.class);
             intentH.putExtra("UserID", currentUser.getId());
             intentH.putExtra("DrawingID", currentDrawing.getId());
             v.getContext().startActivity(intentH);
@@ -230,36 +229,7 @@ public class DrawingActivity extends AppCompatActivity {
             else Toast.makeText(context, R.string.noDrawing, Toast.LENGTH_LONG).show();
         });
 
-        /*container_stroke_width.setOnClickListener(v -> {
-            if (container_stroke_width_slider.getVisibility() == View.INVISIBLE) {
-                int Size = (int) drawing_view.getPenSize();
-                brushSizeIndicator.getLayoutParams().width = Size;
-                brushSizeIndicator.getLayoutParams().height = Size;
-                brushSizeSlider.setProgress(Size);
-                container_stroke_width_slider.setVisibility(View.VISIBLE);
-            } else {
-                container_stroke_width_slider.setVisibility(View.INVISIBLE);
-            }
-        });*/
-
-        /*
-        drawing_view.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                // Remove the brush slider
-                if (brushSizeSlider.getVisibility() == View.VISIBLE) {
-                    brushSizeSlider.setVisibility(View.GONE);
-                    brushSizeIndicator.setVisibility(View.GONE);
-                }
-
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    v.performClick(); // Handle click to avoid warning
-                }
-
-                return false; // False -> means that DrawingView can still process touch events for drawing.
-            }
-        }); */
-
+        // Size slider
         brushSizeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -277,6 +247,7 @@ public class DrawingActivity extends AppCompatActivity {
             }
         });
 
+        // Button share
         share_button.setOnClickListener(v -> {
             share_drawing();
         });
@@ -337,35 +308,18 @@ public class DrawingActivity extends AppCompatActivity {
             }
         });
 
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
+        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
 
-        visibilityCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                currentDrawing.setVisibility(isChecked);
-                drawingDAO.updateDrawing(currentDrawing);
-            }
+        visibilityCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            currentDrawing.setVisibility(isChecked);
+            drawingDAO.updateDrawing(currentDrawing);
         });
 
         // show
         builder.show();
     }
 
-
-
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
+    // Color picker to chose a color
     View.OnClickListener colorPickerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -375,9 +329,11 @@ public class DrawingActivity extends AppCompatActivity {
                     .setPositiveButton(R.string.select, (ColorEnvelopeListener) (envelope, fromUser) -> {
                         // get selected color
                         color = envelope.getColor();
+
                         // use the color
                         drawing_view.setDrawingColor(color);
 
+                        // change the color of the indicator
                         GradientDrawable background = (GradientDrawable) brushSizeIndicator.getBackground();
                         background.setColor(color);
                     })

@@ -1,5 +1,6 @@
 package com.example.pencollab.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +28,7 @@ import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 
+    Context context;
     ImageView back_arrow;
     ListView discover_list;
     HistoryDAO historyDAO;
@@ -38,8 +40,11 @@ public class HistoryActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.history_activity);
 
+        // Get context
+        context = getApplicationContext();
+
         // Get Database
-        AppDatabase db = DatabaseHolder.getInstance(getApplicationContext());
+        AppDatabase db = DatabaseHolder.getInstance(context);
 
         // Get DAO
         historyDAO = db.historyDAO();
@@ -56,7 +61,7 @@ public class HistoryActivity extends AppCompatActivity {
 
         // back arrow
         back_arrow.setOnClickListener(v -> {
-            this.startActivity(new Intent(this, MainActivity.class));
+            this.startActivity(new Intent(context, MainActivity.class));
             finish();
         });
 
