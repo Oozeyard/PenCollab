@@ -59,13 +59,14 @@
         android:textColor="@color/button"/>
 
 
-    <ImageView
-        android:id="@+id/container_frame"
-        android:layout_width="318dp"
-        android:layout_height="424dp"
+    <FrameLayout
+        android:id="@+id/container_drawing"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_marginTop="12dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/container_frame"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
         android:contentDescription="@string/empty"/>
 
     <LinearLayout
@@ -172,7 +173,7 @@
                 android:layout_marginStart="8dp"
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
-                android:text="Size"
+                android:text="@string/size"
                 android:textSize="14sp" />
 
             <Space
@@ -192,6 +193,12 @@
                 android:text="Unknown"
                 android:textSize="14sp" />
 
+
+
         </LinearLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
     </LinearLayout>
 </LinearLayout>

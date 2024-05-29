@@ -58,9 +58,10 @@ public class Drawing {
     public int getWidth() {
         return width;
     }
-
     public int getHeight() {
         return height;
     }
+
+    public Date getCreationDate() { return creationDate; }
 }
 

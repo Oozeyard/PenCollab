@@ -145,7 +145,7 @@ public class DrawingActivity extends AppCompatActivity {
             // Go back to the Main activity
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(context, MainActivity.class);
                 startActivity(intent);
                 finish();
             }
