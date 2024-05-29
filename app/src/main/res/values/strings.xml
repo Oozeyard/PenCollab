@@ -77,4 +77,6 @@
     <string name="exportTrue">Image exported successfully</string>
     <string name="noDrawing">No Drawing found</string>
 
+    <string name="history_updated">Drawing successfully updated !</string>
+
 </resources>

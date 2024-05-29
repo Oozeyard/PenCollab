@@ -151,7 +151,7 @@ public class DrawingActivity extends AppCompatActivity {
         back_arrow.setOnClickListener(v -> {
             if (currentUser.isPremium && isModified) {
                 // Save history
-                History history = new History(currentUser.getId(), currentDrawing.getId(), currentDrawing.getDrawingData());
+                History history = new History(currentUser.getId(), currentDrawing.getId(), currentDrawing.getDrawingData(), currentDrawing.getWidth(), currentDrawing.getHeight());
                 historyDAO.insertHistory(history);
             }
             this.startActivity(new Intent(this, MainActivity.class));
@@ -165,7 +165,7 @@ public class DrawingActivity extends AppCompatActivity {
             public void handleOnBackPressed() {
                 if (currentUser.isPremium && isModified) {
                     // Save history
-                    History history = new History(currentUser.getId(), currentDrawing.getId(), currentDrawing.getDrawingData());
+                    History history = new History(currentUser.getId(), currentDrawing.getId(), currentDrawing.getDrawingData(), currentDrawing.getWidth(), currentDrawing.getHeight());
                     historyDAO.insertHistory(history);
                 }
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
