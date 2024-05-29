@@ -186,12 +186,6 @@ public class DrawingView extends View {
         return true;
     }
 
-    @Override
-    public boolean performClick() {
-        // Override to avoid warning
-        return super.performClick();
-    }
-
     private void updateDrawing() {
         Context context = getContext();
         if (context instanceof DrawingActivity) {

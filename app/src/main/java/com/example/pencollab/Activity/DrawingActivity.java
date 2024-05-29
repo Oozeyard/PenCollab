@@ -242,6 +242,7 @@ public class DrawingActivity extends AppCompatActivity {
             }
         });*/
 
+        /*
         drawing_view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -257,7 +258,7 @@ public class DrawingActivity extends AppCompatActivity {
 
                 return false; // False -> means that DrawingView can still process touch events for drawing.
             }
-        });
+        }); */
 
         brushSizeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
