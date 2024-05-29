@@ -17,7 +17,7 @@ public interface HistoryDAO {
     @Delete
     void deleteHistory(History history);
 
-    @Query("SELECT * FROM History WHERE Did = :Did")
-    List<History> getHistoryByDid;
+    @Query("SELECT * FROM History WHERE Uid = :Uid AND Did = :Did")
+    List<History> getHistoryByDidUid(long Uid, long Did);
 
 }

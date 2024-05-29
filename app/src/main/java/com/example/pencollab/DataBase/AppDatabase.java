@@ -16,12 +16,11 @@ import com.example.pencollab.DataBase.DAO.HistoryDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
 
 // Init Database
-@Database(entities = {User.class, Drawing.class, DrawingUser.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Drawing.class, DrawingUser.class, History.class}, version = 1, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDAO userDAO();
     public abstract DrawingDAO drawingDAO();
     public abstract DrawingUserDAO drawingUserDAO();
-
     public abstract HistoryDAO historyDAO();
 }

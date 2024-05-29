@@ -28,5 +28,6 @@
         <activity android:name=".Activity.PreviewActivity"/>
         <activity android:name=".Activity.ProfileActivity"/>
         <activity android:name=".Activity.JoinActivity"/>
+        <activity android:name=".Activity.HistoryActivity"/>
     </application>
 </manifest>

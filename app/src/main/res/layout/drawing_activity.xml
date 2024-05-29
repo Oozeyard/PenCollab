@@ -41,6 +41,17 @@
             android:text="@string/drawing"
 
             android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/history_button"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/history"
+            android:visibility="invisible"
+            android:contentDescription="@string/empty"/>
+
+
     </LinearLayout>
 
     <EditText

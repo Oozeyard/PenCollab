@@ -45,18 +45,17 @@ public class GetPremiumActivity extends AppCompatActivity {
         buy_button.setOnClickListener(v -> {
             if (currentUser.getId() <= 1) {
                 Toast.makeText(context, R.string.unregistered, Toast.LENGTH_LONG).show();
-                return;
             }
             else if (currentUser.isPremium) {
                 Toast.makeText(context, R.string.ispremium, Toast.LENGTH_LONG).show();
-                return;
             }
             else {
                 currentUser.isPremium = true;
                 userDAO.updateUser(currentUser);
                 Toast.makeText(context, R.string.nowpremium, Toast.LENGTH_LONG).show();
-                finish();
             }
+            this.startActivity(new Intent(this, MainActivity.class));
+            finish();
         });
     }
 }

@@ -17,7 +17,7 @@ import java.util.Date;
         @ForeignKey(
                 entity = User.class,
                 parentColumns = "Uid",
-                childColumns = "UserId",
+                childColumns = "Uid",
                 onDelete = ForeignKey.CASCADE
         )
 })
@@ -35,9 +35,9 @@ public class History {
     public String drawingData;
     public Date creationDate;
 
-    public History(long userID, long drawingID, String drawingData) {
-        this.Did = drawingID;
-        this.Uid = userID;
+    public History(long Uid, long Did, String drawingData) {
+        this.Did = Did;
+        this.Uid = Uid;
         this.drawingData = drawingData;
         this.creationDate = new Date();
     }
