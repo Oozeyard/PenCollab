@@ -93,7 +93,6 @@ public class PreviewActivity extends AppCompatActivity {
 
     void UpdateInformation() {
         String title = currentDrawing.getTitle();
-        if (title.isEmpty()) title = "Unknow";
         text_tile.setText(title);
         title_text.setText(title);
 
