@@ -286,26 +286,23 @@ public class DrawingActivity extends AppCompatActivity {
         builder.setView(layout);
 
         // button
-        builder.setPositiveButton(R.string.share, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String username = input.getText().toString();
+        builder.setPositiveButton(R.string.share, (dialog, which) -> {
+            String username = input.getText().toString();
 
-                if (!username.isEmpty()){
-                    User invitedUser = userDAO.getUserByUsername(username);
-                    // Check if the user exist and isn't himself
-                    if (invitedUser == null || invitedUser.getId() == 1 || invitedUser.username.equals(currentUser.username))
-                        Toast.makeText(context, R.string.user_doesnt_exist, Toast.LENGTH_LONG).show();
-                    else {
-                        // Add to db
-                        DrawingUser sharedDrawing = new DrawingUser(currentDrawing.getId(), invitedUser.getId());
-                        drawingUserDAO.insertCross(sharedDrawing);
-                        String message = R.string.shared_with + invitedUser.getUsername();
-                        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
-                    }
+            if (!username.isEmpty()){
+                User invitedUser = userDAO.getUserByUsername(username);
+                // Check if the user exist and isn't himself
+                if (invitedUser == null || invitedUser.getId() == 1 || invitedUser.username.equals(currentUser.username))
+                    Toast.makeText(context, getString(R.string.user_doesnt_exist), Toast.LENGTH_LONG).show();
+                else {
+                    // Add to db
+                    DrawingUser sharedDrawing = new DrawingUser(currentDrawing.getId(), invitedUser.getId());
+                    drawingUserDAO.insertCross(sharedDrawing);
+                    String message = getString(R.string.shared_with) + " " + invitedUser.getUsername();
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                 }
-                else Toast.makeText(context, R.string.enter_other_username, Toast.LENGTH_LONG).show();
             }
+            else Toast.makeText(context, getString(R.string.enter_other_username), Toast.LENGTH_LONG).show();
         });
 
         builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
