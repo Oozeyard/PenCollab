@@ -78,7 +78,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="Patrick Dessine"
+                android:text="@string/user"
                 android:textSize="16sp" />
 
             <TextView
@@ -90,7 +90,7 @@
                 android:includeFontPadding="false"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="Premium"
+                android:text="@string/premium"
                 android:textSize="12sp" />
         </LinearLayout>
 

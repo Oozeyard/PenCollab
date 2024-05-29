@@ -253,7 +253,7 @@
                     android:gravity="start|center_vertical"
                     android:includeFontPadding="false"
                     android:maxLines="2"
-                    android:text="Eraser"
+                    android:text="@string/eraser"
                     android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>

@@ -68,7 +68,6 @@
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="Patrick Dessine"
                 android:textSize="16sp" />
 
             <TextView
@@ -79,7 +78,6 @@
                 android:gravity="start|center_vertical"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:text="Premium"
                 android:textSize="12sp" />
         </LinearLayout>
 

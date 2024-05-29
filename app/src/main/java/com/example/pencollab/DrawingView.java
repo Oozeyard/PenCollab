@@ -91,12 +91,6 @@ public class DrawingView extends View {
     public void setSize(int width, int height) {
         Widht = width;
         Height = height;
-        /*if (bitmap == null) {
-            bitmap = Bitmap.createBitmap(Widht, Height, Bitmap.Config.ARGB_8888);
-        }
-        canvas = new Canvas(bitmap);
-        canvas.drawColor(Color.TRANSPARENT);
-        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));*/
 
     }
 

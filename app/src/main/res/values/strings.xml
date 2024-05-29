@@ -7,8 +7,8 @@
     <string name="join">Join</string>
     <string name="profile">Profile</string>
     <string name="discover">Discover</string>
-    <string name="gallery">Gallery :</string>
-    <string name="shared_drawing">Shared drawing :</string>
+    <string name="gallery">Gallery:</string>
+    <string name="shared_drawing">Shared drawing:</string>
     <string name="history">History</string>
     <string name="history_list">history list :</string>
 
@@ -18,7 +18,7 @@
     <string name="not_premium">Not premium</string>
     <string name="advantage">Advantage:</string>
     <string name="advantage_list">- History of the design stages \n- Access to more tools</string>
-    <string name="pricing">Pricing :</string>
+    <string name="pricing">Pricing:</string>
     <string name="price">Free !</string>
     <string name="buy">Buy Now !</string>
     <string name="ispremium">You are already Premium, thank you !</string>
@@ -39,12 +39,14 @@
     <string name="log_out">Log Out</string>
     <string name="brush">Brush</string>
     <string name="colors">Colors</string>
+    <string name="eraser">Eraser</string>
     <string name="share">Share</string>
     <string name="save">Save</string>
     <string name="featured_artwork">Featured Artwork</string>
     <string name="search">Search</string>
     <string name="title">Title</string>
     <string name="delete">Delete</string>
+    <string name="unknown">Unknown</string>
     <string name="size">Size</string>
     <string name="by">By:</string>
     <string name="createdOn">Created on:</string>
@@ -64,6 +66,7 @@
     <string name="shared_with">shared with:</string>
     <string name="enter_other_username">Please enter an username</string>
     <string name="Visibility">Visibility</string>
+    <string name="history_updated">Drawing successfully updated !</string>
 
     <!--  Icon  -->
     <string name="palette_icon">🎨</string>
@@ -79,6 +82,6 @@
     <string name="exportTrue">Image exported successfully</string>
     <string name="noDrawing">No Drawing found</string>
 
-    <string name="history_updated">Drawing successfully updated !</string>
+
 
 </resources>
