@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ public class PreviewActivity extends AppCompatActivity {
     Context context;
     ImageView back_arrow;
     TextView text_tile, subtitle_text, date_text, size_text, title_text;
+    Button button_join;
     Intent intent;
     DrawingDAO drawingDAO;
     UserDAO userDAO;
@@ -62,6 +64,7 @@ public class PreviewActivity extends AppCompatActivity {
         date_text = findViewById(R.id.created_date_text);
         size_text = findViewById(R.id.size_text);
         container_drawing = findViewById(R.id.container_drawing);
+        button_join = findViewById(R.id.button_join);
 
         intent = getIntent();
         if (intent != null && intent.getExtras() != null) {
@@ -92,6 +95,8 @@ public class PreviewActivity extends AppCompatActivity {
     }
 
     void UpdateInformation() {
+        if(isProvideDiscoverActivity) button_join.setVisibility(View.GONE);
+        else button_join.setVisibility(View.VISIBLE);
         String title = currentDrawing.getTitle();
         text_tile.setText(title);
         title_text.setText(title);
