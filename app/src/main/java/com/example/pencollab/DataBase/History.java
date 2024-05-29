@@ -34,13 +34,19 @@ public class History {
 
     public String drawingData;
     public Date creationDate;
+    public int width, height;
 
-    public History(long Uid, long Did, String drawingData) {
+    public History(long Uid, long Did, String drawingData, int width, int height) {
         this.Did = Did;
         this.Uid = Uid;
+        this.width = width;
+        this.height = height;
         this.drawingData = drawingData;
         this.creationDate = new Date();
     }
 
     public String getDrawingData() { return drawingData; }
+    public int getWidth() { return width; }
+    public int getHeight() { return height; }
+    public Date getCreationDate() { return creationDate; }
 }
