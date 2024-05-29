@@ -39,8 +39,19 @@
             android:maxLines="1"
             android:singleLine="true"
             android:text="@string/drawing"
-            
+
             android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/history_button"
+            android:layout_width="25dp"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/history"
+            android:visibility="invisible"
+            android:contentDescription="@string/empty"/>
+
+
     </LinearLayout>
 
     <EditText
@@ -311,7 +322,7 @@
         android:paddingLeft="12dp"
         android:paddingRight="12dp"
         android:paddingTop="1dp"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="15dp">
 
 
         <Button

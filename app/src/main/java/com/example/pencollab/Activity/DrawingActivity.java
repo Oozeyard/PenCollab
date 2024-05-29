@@ -9,6 +9,8 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -28,7 +30,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.example.pencollab.DataBase.DAO.DrawingUserDAO;
+import com.example.pencollab.DataBase.DAO.HistoryDAO;
 import com.example.pencollab.DataBase.DrawingUser;
+import com.example.pencollab.DataBase.History;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 
@@ -44,7 +48,7 @@ import com.example.pencollab.R;
 public class DrawingActivity extends AppCompatActivity {
 
     int width, height, color;
-    ImageView back_arrow;
+    ImageView back_arrow, history_button;
     EditText drawing_title;
     DrawingView drawing_view;
     LinearLayout container_buttons, container_chip_brush, container_chip_colors, container_stroke_width, container_eraser, container_stroke_width_slider;
@@ -56,6 +60,8 @@ public class DrawingActivity extends AppCompatActivity {
     DrawingDAO drawingDAO;
     UserDAO userDAO;
     DrawingUserDAO drawingUserDAO;
+    HistoryDAO historyDAO;
+    boolean isModified = false; // if the drawing was modified (for history)
 
     Drawing currentDrawing;
 
@@ -75,6 +81,7 @@ public class DrawingActivity extends AppCompatActivity {
         container_eraser = findViewById(R.id.container_eraser);
         save_button = findViewById(R.id.button_save);
         share_button = findViewById(R.id.button_share);
+        history_button = findViewById(R.id.history_button);
 
         context = getApplicationContext();
 
@@ -89,6 +96,7 @@ public class DrawingActivity extends AppCompatActivity {
         userDAO = db.userDAO();
         drawingDAO = db.drawingDAO();
         drawingUserDAO = db.drawingUserDAO();
+        historyDAO = db.historyDAO();
 
         // Get current user
         currentUser = userDAO.getCurrentUser();
@@ -133,25 +141,50 @@ public class DrawingActivity extends AppCompatActivity {
         if (currentUser.getId() <= 1)  {
             share_button.setVisibility(View.GONE);
         }
-        else container_buttons.setVisibility(View.VISIBLE);
+        else {
+            container_buttons.setVisibility(View.VISIBLE);
+            if (currentUser.isPremium) history_button.setVisibility(View.VISIBLE);
+        }
 
         // Listener
+        // back arrow
         back_arrow.setOnClickListener(v -> {
+            if (currentUser.isPremium && isModified) {
+                // Save history
+                History history = new History(currentUser.getId(), currentDrawing.getId(), currentDrawing.getDrawingData());
+                historyDAO.insertHistory(history);
+            }
             this.startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
+        // Back button
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             // Go back to the Main activity
             @Override
             public void handleOnBackPressed() {
-                Intent intent = new Intent(context, MainActivity.class);
+                if (currentUser.isPremium && isModified) {
+                    // Save history
+                    History history = new History(currentUser.getId(), currentDrawing.getId(), currentDrawing.getDrawingData());
+                    historyDAO.insertHistory(history);
+                }
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
         };
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
 
+        // History Button
+        history_button.setOnClickListener(v -> {
+            // Launch Activity
+            Intent intentH = new Intent(getApplicationContext(), HistoryActivity.class);
+            intentH.putExtra("UserID", currentUser.getId());
+            intentH.putExtra("DrawingID", currentDrawing.getId());
+            v.getContext().startActivity(intentH);
+        });
+
+        // Title
         drawing_title.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -184,7 +217,7 @@ public class DrawingActivity extends AppCompatActivity {
             drawing_view.initializeEraser();
         });
 
-        // Save & Share button
+        // Share
         save_button.setOnClickListener(v -> {
             if (currentDrawing != null) {
                 currentDrawing.setDrawingData(drawing_view.toJSON());
@@ -208,6 +241,23 @@ public class DrawingActivity extends AppCompatActivity {
                 container_stroke_width_slider.setVisibility(View.INVISIBLE);
             }
         });*/
+
+        drawing_view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Remove the brush slider
+                if (brushSizeSlider.getVisibility() == View.VISIBLE) {
+                    brushSizeSlider.setVisibility(View.GONE);
+                    brushSizeIndicator.setVisibility(View.GONE);
+                }
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    v.performClick(); // Handle click to avoid warning
+                }
+
+                return false; // False -> means that DrawingView can still process touch events for drawing.
+            }
+        });
 
         brushSizeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -239,6 +289,7 @@ public class DrawingActivity extends AppCompatActivity {
             currentDrawing.height = height;
             currentDrawing.Did = drawingDAO.insertDrawing(currentDrawing);
         }
+        isModified = true;
         currentDrawing.setDrawingData(DrawingData);
         drawingDAO.updateDrawing(currentDrawing);
     }

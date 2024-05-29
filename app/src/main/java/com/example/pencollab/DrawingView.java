@@ -183,8 +183,13 @@ public class DrawingView extends View {
             default:
                 break;
         }
-
         return true;
+    }
+
+    @Override
+    public boolean performClick() {
+        // Override to avoid warning
+        return super.performClick();
     }
 
     private void updateDrawing() {
