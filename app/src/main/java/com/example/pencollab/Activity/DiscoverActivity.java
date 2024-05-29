@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
@@ -16,6 +17,8 @@ import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
+import com.example.pencollab.DiscoverArrayAdapter;
+import com.example.pencollab.GalleryArrayAdapter;
 import com.example.pencollab.R;
 
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ import java.util.List;
 public class DiscoverActivity extends AppCompatActivity {
 
     ImageView back_arrow;
-    ListView discover_list;
+    ListView list_discover;
     EditText search_bar;
     UserDAO userDAO;
     DrawingDAO drawingDAO;
@@ -46,6 +49,12 @@ public class DiscoverActivity extends AppCompatActivity {
         back_arrow = findViewById(R.id.back_arrow);
         search_bar = findViewById(R.id.search_bar);
 
+        // Set up discover list
+        list_discover = findViewById(R.id.list_discover);
+
+
+
+
 
         back_arrow.setOnClickListener(v -> {
             this.startActivity(new Intent(this, MainActivity.class));
@@ -66,10 +75,7 @@ public class DiscoverActivity extends AppCompatActivity {
         });
 
         // Show public drawing
-        List<Drawing> publicDrawing = drawingDAO.getPublicDrawings();
-        drawings = new ArrayList<>();
-        if (publicDrawing != null) drawings.addAll(publicDrawing);
-
-
+        ArrayList<Drawing> public_drawings = new ArrayList<>(drawingDAO.getPublicDrawings());
+        list_discover.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, public_drawings));
     }
 }

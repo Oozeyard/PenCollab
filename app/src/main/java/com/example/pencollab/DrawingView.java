@@ -1,5 +1,6 @@
 package com.example.pencollab;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -45,13 +46,18 @@ public class DrawingView extends View {
     private int Widht, Height;
     private int color = Color.BLACK;
 
+    PorterDuffXfermode x_src_over, x_clear;
+
 
     public DrawingView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        x_src_over = new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER);
+        x_clear = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
         init();
     }
 
     public void init() {
+        isEraserMode = false;
         path = new Path();
         drawPaint = new Paint();
         bitmapPaint = new Paint(Paint.DITHER_FLAG);
@@ -61,8 +67,7 @@ public class DrawingView extends View {
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStrokeWidth(penSize);
-        isEraserMode = false;
-        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+        drawPaint.setXfermode(x_src_over);
     }
 
     @Override protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -70,8 +75,12 @@ public class DrawingView extends View {
         if (bitmap == null) {
             bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         }
-        canvas = new Canvas(bitmap);
-        canvas.drawColor(Color.TRANSPARENT);
+        if (canvas == null) {
+            canvas = new Canvas(bitmap);
+            canvas.drawColor(Color.TRANSPARENT);
+        }
+        canvas.drawBitmap(bitmap, 0, 0, drawPaint);
+        drawPaint.setXfermode(x_src_over);
 
         if (loadBitmap != null) canvas.drawBitmap(loadBitmap, 0, 0, bitmapPaint);
     }
@@ -82,11 +91,12 @@ public class DrawingView extends View {
     public void setSize(int width, int height) {
         Widht = width;
         Height = height;
-        if (bitmap == null) {
+        /*if (bitmap == null) {
             bitmap = Bitmap.createBitmap(Widht, Height, Bitmap.Config.ARGB_8888);
         }
         canvas = new Canvas(bitmap);
         canvas.drawColor(Color.TRANSPARENT);
+        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));*/
 
     }
 
@@ -100,11 +110,6 @@ public class DrawingView extends View {
         this.eraserSize = penSize;
         if(isEraserMode) initializeEraser();
         else initializePen();
-    }
-
-    public void setEraserMode(boolean eraserMode) {
-        this.isEraserMode = eraserMode;
-        initializeEraser();
     }
 
     @Override
@@ -138,12 +143,13 @@ public class DrawingView extends View {
         canvas.drawPath(path, drawPaint);
         path.reset();
         if (isEraserMode) {
-            drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+            drawPaint.setXfermode(x_clear);
         } else {
-            drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+            drawPaint.setXfermode(x_src_over);
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         float x = event.getX();
@@ -152,9 +158,9 @@ public class DrawingView extends View {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (isEraserMode) {
-                    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+                    drawPaint.setXfermode(x_clear);
                 } else {
-                    drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+                    drawPaint.setXfermode(x_src_over);
                 }
                 touchStart(x, y);
                 invalidate();
@@ -172,11 +178,12 @@ public class DrawingView extends View {
             case MotionEvent.ACTION_UP:
                 touchUp();
                 invalidate();
+                updateDrawing();
                 break;
             default:
                 break;
         }
-        updateDrawing();
+
         return true;
     }
 
@@ -196,15 +203,14 @@ public class DrawingView extends View {
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         drawPaint.setStrokeCap(Paint.Cap.ROUND);
         drawPaint.setStrokeWidth(penSize);
-        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_OVER));
+        drawPaint.setXfermode(x_src_over);
     }
 
     public void initializeEraser() {
         isEraserMode = true;
-        //drawPaint.setColor(Color.parseColor("#f4f4f4"));
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeWidth(eraserSize);
-        drawPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        drawPaint.setXfermode(x_clear);
     }
 
     public void clear() {
@@ -220,6 +226,7 @@ public class DrawingView extends View {
 
                 if (loadBitmap != null) {
                     // Créer une matrice de mise à l'échelle
+                    @SuppressLint("DrawAllocation")
                     Matrix matrix = new Matrix();
                     matrix.postScale(
                             (float) getWidth() / Widht,
@@ -227,13 +234,12 @@ public class DrawingView extends View {
                     );
 
                     // Appliquer la matrice au bitmap
+                    @SuppressLint("DrawAllocation")
                     Bitmap scaledBitmap = Bitmap.createBitmap(loadBitmap, 0, 0, loadBitmap.getWidth(), loadBitmap.getHeight(), matrix, true);
 
                     // Dessiner le bitmap mis à l'échelle sur le canvas
                     canvas.drawBitmap(scaledBitmap, 0, 0, bitmapPaint);
                 }
-
-                //canvas.drawPath(path, drawPaint);
 
             }
         };

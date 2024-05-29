@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -46,7 +47,7 @@ public class DrawingActivity extends AppCompatActivity {
     ImageView back_arrow;
     EditText drawing_title;
     DrawingView drawing_view;
-    LinearLayout container_buttons, container_chip_brush, container_chip_colors, container_stroke_width, container_eraser;
+    LinearLayout container_buttons, container_chip_brush, container_chip_colors, container_stroke_width, container_eraser, container_stroke_width_slider;
     SeekBar brushSizeSlider;
     View brushSizeIndicator;
     Button save_button, share_button;
@@ -77,6 +78,7 @@ public class DrawingActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        container_stroke_width_slider = findViewById(R.id.container_stroke_width_slider);
         brushSizeSlider = findViewById(R.id.brush_size_slider);
         brushSizeIndicator = findViewById(R.id.brush_size_indicator);
 
@@ -104,8 +106,17 @@ public class DrawingActivity extends AppCompatActivity {
                 // Get the dimensions of drawing_view
                 width = drawing_view.getWidth();
                 height = drawing_view.getHeight();
+
+                GradientDrawable background = (GradientDrawable) brushSizeIndicator.getBackground();
+                background.setColor(Color.BLACK);
+                int Size = (int) drawing_view.getPenSize();
+                brushSizeIndicator.getLayoutParams().width = Size;
+                brushSizeIndicator.getLayoutParams().height = Size;
+                brushSizeSlider.setProgress(Size);
             }
         });
+
+
 
 
         // Get the drawing
@@ -120,7 +131,7 @@ public class DrawingActivity extends AppCompatActivity {
 
         // if user is not registered
         if (currentUser.getId() <= 1)  {
-            share_button.setVisibility(View.INVISIBLE);
+            share_button.setVisibility(View.GONE);
         }
         else container_buttons.setVisibility(View.VISIBLE);
 
@@ -186,19 +197,17 @@ public class DrawingActivity extends AppCompatActivity {
             else Toast.makeText(context, R.string.noDrawing, Toast.LENGTH_LONG).show();
         });
 
-        container_stroke_width.setOnClickListener(v -> {
-            if (brushSizeSlider.getVisibility() == View.GONE) {
+        /*container_stroke_width.setOnClickListener(v -> {
+            if (container_stroke_width_slider.getVisibility() == View.INVISIBLE) {
                 int Size = (int) drawing_view.getPenSize();
                 brushSizeIndicator.getLayoutParams().width = Size;
                 brushSizeIndicator.getLayoutParams().height = Size;
                 brushSizeSlider.setProgress(Size);
-                brushSizeSlider.setVisibility(View.VISIBLE);
-                brushSizeIndicator.setVisibility(View.VISIBLE);
+                container_stroke_width_slider.setVisibility(View.VISIBLE);
             } else {
-                brushSizeSlider.setVisibility(View.GONE);
-                brushSizeIndicator.setVisibility(View.GONE);
+                container_stroke_width_slider.setVisibility(View.INVISIBLE);
             }
-        });
+        });*/
 
         brushSizeSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

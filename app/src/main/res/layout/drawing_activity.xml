@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/title"
-        android:layout_margin="10dp"
+        android:layout_margin="2dp"
         android:gravity="center"
         android:autofillHints="name"
         android:inputType="textCapWords" />
@@ -167,7 +167,8 @@
                 android:paddingBottom="11dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:paddingTop="11dp">
+                android:paddingTop="11dp"
+                android:visibility="gone">
 
                 <FrameLayout
                     android:layout_width="32dp"
@@ -228,7 +229,7 @@
                         android:includeFontPadding="false"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:text="📏"
+                        android:text="😬"
                         android:textSize="20sp" />
                 </FrameLayout>
 
@@ -248,26 +249,54 @@
 
     </HorizontalScrollView>
 
-    <SeekBar
-        android:id="@+id/brush_size_slider"
+    <LinearLayout
+        android:id="@+id/container_stroke_width_slider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:max="100" />
-
-    <View
-        android:id="@+id/brush_size_indicator"
-        android:layout_width="50dp"
         android:layout_height="50dp"
-        android:background="@drawable/circle"
-        android:visibility="gone" />
+        android:padding="2dp"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/size"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:layout_margin="10dp"/>
+
+        <FrameLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical">
+
+            <View
+                android:id="@+id/brush_size_indicator"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/circle"
+                android:layout_gravity="center"/>
+
+
+        </FrameLayout>
+        <SeekBar
+            android:id="@+id/brush_size_slider"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:layout_gravity="center_vertical"
+            android:padding="10dp"/>
+
+
+    </LinearLayout>
+
+
 
     <com.example.pencollab.DrawingView
         android:id="@+id/drawinView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="2dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:background="@drawable/container_frame"/>

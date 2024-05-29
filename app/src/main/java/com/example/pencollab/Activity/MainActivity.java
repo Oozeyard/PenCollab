@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateRecycler();
 
-        List<User> userList = userDAO.getAll();
+        //List<User> userList = userDAO.getAll();
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             // Close app
@@ -130,10 +130,9 @@ public class MainActivity extends AppCompatActivity {
         };
         getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
 
-        for (User user : userList) Log.d("User", "ID: " + user.getId() + ", Name: " + user.getUsername() + ", Mail: " + currentUser.getEmail());
+        //for (User user : userList) Log.d("User", "ID: " + user.getId() + ", Name: " + user.getUsername() + ", Mail: " + currentUser.getEmail());
     }
 
-    // /!\ à voir /!\
     private void startNewActivity(Class<?> classActivity) {
         this.startActivity(new Intent(MainActivity.this, classActivity));
         finish();
@@ -150,6 +149,6 @@ public class MainActivity extends AppCompatActivity {
             drawings.addAll(sharedDrawing);
         }
 
-        recyclerView_pictures.setAdapter(new GalleryArrayAdapter(drawings, this));
+        recyclerView_pictures.setAdapter(new GalleryArrayAdapter(this, drawings));
     }
 }

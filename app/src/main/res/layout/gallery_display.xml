@@ -14,9 +14,8 @@
     <FrameLayout
         android:id="@+id/image_artwork"
         android:layout_width="170dp"
-        android:layout_height="165dp"
-        android:layout_margin="2dp"
-        />
+        android:layout_height="185dp"
+        android:layout_margin="2dp" />
 
     <TextView
         android:id="@+id/text_title_drawing"

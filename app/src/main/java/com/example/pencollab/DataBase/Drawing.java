@@ -44,6 +44,8 @@ public class Drawing {
 
     public long getId() { return Did; }
 
+    public long getOwnerId() { return OwnerId; }
+
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
