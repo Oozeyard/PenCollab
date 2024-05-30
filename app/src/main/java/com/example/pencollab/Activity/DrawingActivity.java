@@ -3,21 +3,16 @@ package com.example.pencollab.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.Checkable;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,23 +22,21 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.drawable.DrawableCompat;
-
-import com.example.pencollab.DataBase.DAO.DrawingUserDAO;
-import com.example.pencollab.DataBase.DAO.HistoryDAO;
-import com.example.pencollab.DataBase.DrawingUser;
-import com.example.pencollab.DataBase.History;
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
-import com.skydoves.colorpickerview.ColorPickerDialog;
 
 import com.example.pencollab.DataBase.AppDatabase;
-import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
+import com.example.pencollab.DataBase.DAO.DrawingUserDAO;
+import com.example.pencollab.DataBase.DAO.HistoryDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
+import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
+import com.example.pencollab.DataBase.DrawingUser;
+import com.example.pencollab.DataBase.History;
 import com.example.pencollab.DataBase.User;
 import com.example.pencollab.DrawingView;
 import com.example.pencollab.R;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
 public class DrawingActivity extends AppCompatActivity {
 
@@ -305,7 +298,7 @@ public class DrawingActivity extends AppCompatActivity {
             else Toast.makeText(context, getString(R.string.enter_other_username), Toast.LENGTH_LONG).show();
         });
 
-        builder.setNegativeButton(R.string.cancel, (dialog, which) -> dialog.cancel());
+        builder.setNegativeButton(R.string.returnT, (dialog, which) -> dialog.cancel());
 
         visibilityCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
             currentDrawing.setVisibility(isChecked);

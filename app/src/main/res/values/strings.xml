@@ -51,6 +51,7 @@
     <string name="size">Size</string>
     <string name="by">By:</string>
     <string name="createdOn">Created on:</string>
+    <string name="returnT">Return</string>
     <string name="empty"/>
 
     <!-- AlertDialogue -->

@@ -1,14 +1,12 @@
 package com.example.pencollab.Activity;
 
 import android.content.Intent;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -49,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.main_menu_activity);
-
 
         // Get view
         draw_layout = findViewById(R.id.container_draw);
@@ -112,7 +109,11 @@ public class MainActivity extends AppCompatActivity {
         });
         discover_layout.setOnClickListener(v -> startNewActivity(DiscoverActivity.class));
 
-        if (isregistered) view_profile_layout.setOnClickListener(v -> startNewActivity(ProfileActivity.class));
+        if (isregistered) view_profile_layout.setOnClickListener(v -> {
+            Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
+            profileIntent.putExtra("UserID", currentUser.getId());
+            v.getContext().startActivity(profileIntent);
+        });
         else view_profile_layout.setOnClickListener(v -> startNewActivity(LoginActivity.class));
 
         if(currentUser.getPremium()) premium_button.setVisibility(View.INVISIBLE);

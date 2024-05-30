@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.pencollab.Activity.DrawingActivity;
 import com.example.pencollab.DataBase.AppDatabase;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
+import com.example.pencollab.DataBase.DAO.HistoryDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
 
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapter.ViewHolder> {
     private final ArrayList<Drawing> values;
     private final DrawingDAO drawingDAO;
+    private final HistoryDAO historyDAO;
 
 
 
@@ -34,6 +36,7 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
         this.values = values;
         AppDatabase db = DatabaseHolder.getInstance(context.getApplicationContext());
         this.drawingDAO = db.drawingDAO();
+        this.historyDAO = db.historyDAO();
     }
 
     @NonNull
@@ -68,6 +71,7 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
                     .setPositiveButton("YES", (dialog, which) -> {
                         // Delete to the database
                         drawingDAO.deleteDrawing(drawing);
+                        historyDAO.deleteHistoriesById(drawing.getId());
 
                         // Delete to the list
                         values.remove(position);
