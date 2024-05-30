@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pencollab.DataBase.AppDatabase;
@@ -47,6 +48,17 @@ public class GetPremiumActivity extends AppCompatActivity {
             this.startActivity(new Intent(context, MainActivity.class));
             finish();
         });
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            // Go back to the Main activity
+            @Override
+            public void handleOnBackPressed() {
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
 
         buy_button.setOnClickListener(v -> {
             if (currentUser.getId() <= 1) {

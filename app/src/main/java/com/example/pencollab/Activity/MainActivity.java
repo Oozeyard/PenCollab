@@ -1,7 +1,9 @@
 package com.example.pencollab.Activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -30,14 +32,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    LinearLayout draw_layout, join_layout, discover_layout, view_profile_layout;
+    LinearLayout draw_layout, join_layout, discover_layout, view_profile_layout, container_user;
     Button premium_button;
     Boolean isregistered;
-    TextView profile_button, txt_user_name, txt_user_status;
+    TextView profile_button, txt_user_name, txt_user_status, appTitle;
     RecyclerView recyclerView_pictures;
     ArrayList<Drawing> drawings;
     DrawingDAO drawingDAO;
     DrawingUserDAO drawingUserDAO;
+    int ClickCount;
+    Handler handler = new Handler();
+    Runnable resetclick = () -> ClickCount = 0;
 
     User currentUser;
     long currentUserId;
@@ -53,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
         join_layout = findViewById(R.id.container_join);
         discover_layout = findViewById(R.id.container_discover);
         view_profile_layout = findViewById(R.id.container_view_profile);
+        container_user = findViewById(R.id.container_user);
         premium_button = findViewById(R.id.premium_button);
+        appTitle = findViewById(R.id.appTitle);
 
         profile_button = findViewById(R.id.profile_button);
         txt_user_name = findViewById(R.id.txt_user_name);
@@ -109,17 +116,26 @@ public class MainActivity extends AppCompatActivity {
         });
         discover_layout.setOnClickListener(v -> startNewActivity(DiscoverActivity.class));
 
-        if (isregistered) view_profile_layout.setOnClickListener(v -> {
+        if (isregistered) container_user.setOnClickListener(v -> {
             Intent profileIntent = new Intent(getApplicationContext(), ProfileActivity.class);
             profileIntent.putExtra("UserID", currentUser.getId());
             v.getContext().startActivity(profileIntent);
         });
-        else view_profile_layout.setOnClickListener(v -> startNewActivity(LoginActivity.class));
+        else container_user.setOnClickListener(v -> startNewActivity(LoginActivity.class));
 
         if(currentUser.getPremium()) premium_button.setVisibility(View.INVISIBLE);
         else premium_button.setVisibility(View.VISIBLE);
 
         premium_button.setOnClickListener(v -> startNewActivity(GetPremiumActivity.class));
+        appTitle.setOnClickListener(v -> { // important
+            ClickCount++;
+            handler.removeCallbacks(resetclick);
+            handler.postDelayed(resetclick, 1000); // Reset click count after 1 second of inactivity
+            if (ClickCount == 5) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtube.com/shorts/gvsNaH6s0hs?si=ImvDmDuHsXDp_Vdv")));
+                ClickCount = 0; // Reset click count after update() is called
+            }
+        });
 
         // Set up gallery list
         recyclerView_pictures = findViewById(R.id.container_gallery);

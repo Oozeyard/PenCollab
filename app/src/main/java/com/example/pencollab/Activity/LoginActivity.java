@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pencollab.DataBase.AppDatabase;
@@ -108,6 +109,15 @@ public class LoginActivity extends AppCompatActivity {
         back_arrow.setOnClickListener(v -> {
             nice();
         });
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            // Go back to the Main activity
+            @Override
+            public void handleOnBackPressed() {
+                nice();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this,onBackPressedCallback);
     }
 
     private void nice() {
