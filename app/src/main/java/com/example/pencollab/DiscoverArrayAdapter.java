@@ -54,6 +54,9 @@ public class DiscoverArrayAdapter extends RecyclerView.Adapter<DiscoverArrayAdap
         holder.text_title_drawing.setText(drawing.getTitle());
         holder.text_owner_drawing.setText(userDAO.getUserByID(drawing.getOwnerId()).getUsername());
 
+        // Clear previous drawing views
+        holder.image_artwork.removeAllViews();
+
         // Display the drawing
         DrawingView drawingView = new DrawingView(context, null);
         drawingView.setSize(drawing.getWidth(), drawing.getHeight());

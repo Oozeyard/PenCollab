@@ -51,6 +51,8 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
         Drawing drawing = values.get(position);
         holder.title.setText(drawing.getTitle());
 
+        // Clear previous drawing views
+        holder.drawing_preview.removeAllViews();
 
         // Display the drawing
         DrawingView drawingView = new DrawingView(holder.itemView.getContext(), null);

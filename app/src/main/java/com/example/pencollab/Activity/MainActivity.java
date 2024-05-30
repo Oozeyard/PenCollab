@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     DrawingDAO drawingDAO;
     DrawingUserDAO drawingUserDAO;
     int ClickCount;
-    Handler handler = new Handler();
+    Handler handler = new Handler(Looper.getMainLooper());
     Runnable resetclick = () -> ClickCount = 0;
 
     User currentUser;

@@ -65,6 +65,9 @@ public class HistoryArrayAdapter extends RecyclerView.Adapter<HistoryArrayAdapte
         holder.text_title_drawing.setText(dateFormat.format(drawingDate));
         holder.text_owner_drawing.setVisibility(View.GONE);
 
+        // Clear previous drawing views
+        holder.image_artwork.removeAllViews();
+
         // Display the drawing
         DrawingView drawingView = new DrawingView(context, null);
         drawingView.setSize(history.getWidth(), history.getHeight());
