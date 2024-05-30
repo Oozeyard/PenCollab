@@ -70,13 +70,12 @@ public class PreviewActivity extends AppCompatActivity {
         if (intent != null && intent.getExtras() != null) {
             currentDrawing = drawingDAO.getDrawingByID(intent.getLongExtra("DrawingID", -1));
             drawingUser = userDAO.getUserByID(intent.getLongExtra("UserID", -1));
-            isProvideDiscoverActivity = intent.getBooleanExtra("isDicoverActivity", false);
+            isProvideDiscoverActivity = intent.getBooleanExtra("isDiscoverActivity", false);
 
             UpdateInformation();
         }
 
         back_arrow.setOnClickListener(v -> {
-            this.startActivity(new Intent(this, MainActivity.class));
             finish();
         });
 
@@ -84,10 +83,6 @@ public class PreviewActivity extends AppCompatActivity {
             // Go back to the Discover Activity
             @Override
             public void handleOnBackPressed() {
-                Intent intent;
-                if (isProvideDiscoverActivity) intent = new Intent(context, DiscoverActivity.class);
-                else intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
                 finish();
             }
         };

@@ -67,8 +67,8 @@ public class DiscoverArrayAdapter extends RecyclerView.Adapter<DiscoverArrayAdap
             intent.putExtra("DrawingID", drawing.getId());
             intent.putExtra("UserID", user.getId());
 
-            if (context instanceof DiscoverActivity || context instanceof ProfileActivity) intent.putExtra("isDicoverActivity", true);
-            else intent.putExtra("isDicoverActivity", false);
+            if (context instanceof DiscoverActivity || context instanceof ProfileActivity) intent.putExtra("isDiscoverActivity", true);
+            else intent.putExtra("isDiscoverActivity", false);
 
             context.startActivity(intent);
         });
