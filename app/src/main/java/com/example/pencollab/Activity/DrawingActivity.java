@@ -306,7 +306,7 @@ public class DrawingActivity extends AppCompatActivity {
     }
 
     // Color picker to chose a color
-    View.OnClickListener colorPickerClickListener = new View.OnClickListener() {
+    final View.OnClickListener colorPickerClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             new ColorPickerDialog.Builder(v.getContext())

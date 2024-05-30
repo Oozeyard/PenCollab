@@ -46,7 +46,8 @@ public class DrawingView extends View {
     private int Widht, Height;
     private int color = Color.BLACK;
 
-    PorterDuffXfermode x_src_over, x_clear;
+    final PorterDuffXfermode x_src_over;
+    final PorterDuffXfermode x_clear;
 
 
     public DrawingView(Context context, @Nullable AttributeSet attrs) {

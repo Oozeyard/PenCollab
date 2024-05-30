@@ -92,8 +92,8 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        FrameLayout drawing_preview;
+        final TextView title;
+        final FrameLayout drawing_preview;
 
         public ViewHolder(View itemView) {
             super(itemView);

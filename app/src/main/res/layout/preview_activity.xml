@@ -165,7 +165,6 @@
             </FrameLayout>
 
             <TextView
-                android:id="@+id/container_frame4"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"

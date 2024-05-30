@@ -47,7 +47,6 @@
         android:paddingRight="12dp">
 
         <ImageView
-            android:id="@+id/img_avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:scaleType="centerInside"
@@ -234,7 +233,6 @@
             android:background="@drawable/container_shadow_icon">
 
             <TextView
-                android:id="@+id/icon_drawable"
                 android:layout_width="48dp"
                 android:layout_height="57dp"
                 android:layout_marginTop="-4.5dp"
@@ -249,7 +247,6 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/text_draw"
             android:layout_width="match_parent"
             android:layout_height="28dp"
             android:layout_marginTop="4dp"
@@ -261,7 +258,6 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/text_gallery"
         android:layout_width="match_parent"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"

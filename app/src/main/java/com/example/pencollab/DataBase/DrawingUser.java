@@ -23,9 +23,9 @@ public class DrawingUser { // User who've got access to the drawing
     @PrimaryKey(autoGenerate = true)
     public long CrossId;
     @ColumnInfo(index = true)
-    public long Did;
+    public final long Did;
     @ColumnInfo(index = true)
-    public long UserId;
+    public final long UserId;
 
     public DrawingUser(long Did, long UserId) {
         this.Did = Did; // Drawing to share

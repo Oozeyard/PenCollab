@@ -28,13 +28,14 @@ public class History {
 
     // Foreign key -> DrawingID & UserID
     @ColumnInfo(index = true)
-    public long Did;
+    public final long Did;
     @ColumnInfo(index = true)
-    public long Uid;
+    public final long Uid;
 
-    public String drawingData;
+    public final String drawingData;
     public Date creationDate;
-    public int width, height;
+    public final int width;
+    public final int height;
 
     public History(long Uid, long Did, String drawingData, int width, int height) {
         this.Did = Did;

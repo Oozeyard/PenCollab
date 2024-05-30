@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
     DrawingDAO drawingDAO;
     DrawingUserDAO drawingUserDAO;
     int ClickCount;
-    Handler handler = new Handler(Looper.getMainLooper());
-    Runnable resetclick = () -> ClickCount = 0;
+    final Handler handler = new Handler(Looper.getMainLooper());
+    final Runnable resetclick = () -> ClickCount = 0;
 
     User currentUser;
     long currentUserId;

@@ -107,9 +107,9 @@ public class HistoryArrayAdapter extends RecyclerView.Adapter<HistoryArrayAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        FrameLayout image_artwork;
-        TextView text_title_drawing;
-        TextView text_owner_drawing;
+        final FrameLayout image_artwork;
+        final TextView text_title_drawing;
+        final TextView text_owner_drawing;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -65,7 +65,6 @@
     <string name="wrong_username">"Error: wrong username"</string>
     <string name="wrong_password">"Error: wrong password"</string>
     <string name="your_password">Your password is:</string>
-    <string name="send">Send</string>
     <string name="shared_with">Shared with:</string>
     <string name="enter_other_username">Please enter an username</string>
     <string name="Visibility">Visibility</string>
