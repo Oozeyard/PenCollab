@@ -1,6 +1,5 @@
 package com.example.pencollab.Activity;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -37,8 +36,9 @@ public class PreviewActivity extends AppCompatActivity {
     DrawingDAO drawingDAO;
     UserDAO userDAO;
     Drawing currentDrawing;
-    User user, drawingUser;
+    User drawingUser;
     FrameLayout container_drawing;
+    LinearLayout info_container;
     Boolean isProvideDiscoverActivity;
 
     @Override
@@ -64,6 +64,7 @@ public class PreviewActivity extends AppCompatActivity {
         date_text = findViewById(R.id.created_date_text);
         size_text = findViewById(R.id.size_text);
         container_drawing = findViewById(R.id.container_drawing);
+        info_container = findViewById(R.id.info_container);
         button_join = findViewById(R.id.button_join);
 
         intent = getIntent();
@@ -75,9 +76,7 @@ public class PreviewActivity extends AppCompatActivity {
             UpdateInformation();
         }
 
-        back_arrow.setOnClickListener(v -> {
-            finish();
-        });
+        back_arrow.setOnClickListener(v -> finish());
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             // Go back to the Discover Activity
@@ -91,6 +90,13 @@ public class PreviewActivity extends AppCompatActivity {
         button_join.setOnClickListener(v -> {
             intent = new Intent(context, DrawingActivity.class);
             intent.putExtra("DrawingID", currentDrawing.getId());
+            startActivity(intent);
+            finish();
+        });
+
+        info_container.setOnClickListener(v -> {
+            intent = new Intent(context, ProfileActivity.class);
+            intent.putExtra("UserID", drawingUser.getId());
             startActivity(intent);
             finish();
         });

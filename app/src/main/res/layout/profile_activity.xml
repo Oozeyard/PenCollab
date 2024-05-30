@@ -130,7 +130,7 @@
         android:includeFontPadding="false"
         android:maxLines="1"
         android:singleLine="true"
-        android:text="@string/featured_artwork"
+        android:text="@string/artwork"
         android:textSize="18sp" />
 
 
