@@ -1,21 +1,10 @@
 package com.example.pencollab.DataBase;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Ignore;
-import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-import com.example.pencollab.DrawingView;
-
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Date;
 
 

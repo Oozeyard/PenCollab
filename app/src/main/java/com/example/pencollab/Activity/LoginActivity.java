@@ -103,12 +103,24 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         forgot.setOnClickListener(v -> {
+            if (getStringTxt()) return;
 
+            User user = userDAO.getUserByEmail(emailS);
+
+            if (user == null) {
+                showAlert(getString(R.string.user_doesnt_exist));
+                return;
+            }
+
+            if (!usernameS.equals(user.getUsername())) {
+                showAlert(getString(R.string.wrong_username));
+                return;
+            }
+
+            showAlert(getString(R.string.your_password)+ " " + user.getPassword());
         });
 
-        back_arrow.setOnClickListener(v -> {
-            nice();
-        });
+        back_arrow.setOnClickListener(v -> nice());
 
         OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
             // Go back to the Main activity

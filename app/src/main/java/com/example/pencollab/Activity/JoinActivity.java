@@ -7,8 +7,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;

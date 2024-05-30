@@ -25,6 +25,7 @@ import com.example.pencollab.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class PreviewActivity extends AppCompatActivity {
 
@@ -116,7 +117,7 @@ public class PreviewActivity extends AppCompatActivity {
         size_text.setText(size);
 
         Date drawingDate = currentDrawing.getCreationDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         String date = getString(R.string.createdOn)+" "+dateFormat.format(drawingDate);
         date_text.setText(date);
 

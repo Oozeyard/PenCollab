@@ -1,20 +1,9 @@
 package com.example.pencollab.Activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,19 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pencollab.DataBase.AppDatabase;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
-import com.example.pencollab.DataBase.DAO.DrawingUserDAO;
 import com.example.pencollab.DataBase.DAO.HistoryDAO;
-import com.example.pencollab.DataBase.DAO.UserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
-import com.example.pencollab.DataBase.Drawing;
 import com.example.pencollab.DataBase.History;
-import com.example.pencollab.DataBase.User;
-import com.example.pencollab.DiscoverArrayAdapter;
 import com.example.pencollab.HistoryArrayAdapter;
 import com.example.pencollab.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class HistoryActivity extends AppCompatActivity {
 

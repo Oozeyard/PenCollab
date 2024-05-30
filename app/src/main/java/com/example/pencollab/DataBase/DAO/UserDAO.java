@@ -24,8 +24,6 @@ public interface UserDAO {
     User getUserByID(long Uid);
     @Query("SELECT * FROM Users WHERE Username = :name")
     User getUserByUsername(String name);
-    @Query("SELECT isPremium FROM Users WHERE Uid = :Uid")
-    boolean isPremiumByID(long Uid);
     @Query("SELECT * FROM Users WHERE email = :email")
     User getUserByEmail(String email);
     @Query("SELECT * FROM Users WHERE isCurrentUser = 1 LIMIT 1")
@@ -33,8 +31,6 @@ public interface UserDAO {
     @Query("SELECT COUNT(*) FROM Users")
     int getCount();
     @Query("SELECT * FROM Users")
-    List<User> getAll();
+    List<User> getAllUser();
 
-    @Query("DELETE FROM Users")
-    void nukeTable(); // o7
 }

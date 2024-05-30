@@ -3,13 +3,9 @@ package com.example.pencollab;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,23 +13,18 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.pencollab.Activity.DiscoverActivity;
 import com.example.pencollab.Activity.DrawingActivity;
-import com.example.pencollab.Activity.HistoryActivity;
-import com.example.pencollab.Activity.PreviewActivity;
-import com.example.pencollab.Activity.ProfileActivity;
 import com.example.pencollab.DataBase.AppDatabase;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.HistoryDAO;
-import com.example.pencollab.DataBase.DAO.UserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
 import com.example.pencollab.DataBase.History;
-import com.example.pencollab.DataBase.User;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class HistoryArrayAdapter extends RecyclerView.Adapter<HistoryArrayAdapter.ViewHolder> {
     private final ArrayList<History> values;
@@ -61,7 +52,7 @@ public class HistoryArrayAdapter extends RecyclerView.Adapter<HistoryArrayAdapte
         Context context = holder.itemView.getContext();
 
         Date drawingDate = history.getCreationDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         holder.text_title_drawing.setText(dateFormat.format(drawingDate));
         holder.text_owner_drawing.setVisibility(View.GONE);
 

@@ -2,12 +2,9 @@ package com.example.pencollab;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -18,7 +15,6 @@ import com.example.pencollab.Activity.DiscoverActivity;
 import com.example.pencollab.Activity.PreviewActivity;
 import com.example.pencollab.Activity.ProfileActivity;
 import com.example.pencollab.DataBase.AppDatabase;
-import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
@@ -28,13 +24,11 @@ import java.util.ArrayList;
 
 public class DiscoverArrayAdapter extends RecyclerView.Adapter<DiscoverArrayAdapter.ViewHolder> {
     private final ArrayList<Drawing> values;
-    private final DrawingDAO drawingDAO;
     private final UserDAO userDAO;
 
     public DiscoverArrayAdapter(Context context, ArrayList<Drawing> values) {
         this.values = values;
         AppDatabase db = DatabaseHolder.getInstance(context.getApplicationContext());
-        this.drawingDAO = db.drawingDAO();
         this.userDAO = db.userDAO();
     }
 
@@ -70,8 +64,7 @@ public class DiscoverArrayAdapter extends RecyclerView.Adapter<DiscoverArrayAdap
             intent.putExtra("DrawingID", drawing.getId());
             intent.putExtra("UserID", user.getId());
 
-            if (context instanceof DiscoverActivity || context instanceof ProfileActivity) intent.putExtra("isDiscoverActivity", true);
-            else intent.putExtra("isDiscoverActivity", false);
+            intent.putExtra("isDiscoverActivity", context instanceof DiscoverActivity || context instanceof ProfileActivity);
 
             context.startActivity(intent);
         });

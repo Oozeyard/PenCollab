@@ -198,9 +198,7 @@ public class DrawingActivity extends AppCompatActivity {
         });
 
         // Brush
-        container_chip_brush.setOnClickListener(v -> {
-            drawing_view.initializePen();
-        });
+        container_chip_brush.setOnClickListener(v -> drawing_view.initializePen());
         // Color palette
         container_chip_colors.setOnClickListener(colorPickerClickListener);
         // Eraser
@@ -241,9 +239,7 @@ public class DrawingActivity extends AppCompatActivity {
         });
 
         // Button share
-        share_button.setOnClickListener(v -> {
-            share_drawing();
-        });
+        share_button.setOnClickListener(v -> share_drawing());
 
     }
 

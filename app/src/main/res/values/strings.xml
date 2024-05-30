@@ -11,7 +11,7 @@
     <string name="shared_drawing">Shared drawing:</string>
     <string name="public_drawing">Public drawing:</string>
     <string name="history">History</string>
-    <string name="history_list">history list :</string>
+    <string name="history_list">History list:</string>
 
     <!--  Premium page  -->
     <string name="get_premium">Get Premium !</string>
@@ -52,38 +52,36 @@
     <string name="by">By:</string>
     <string name="createdOn">Created on:</string>
     <string name="returnT">Return</string>
-    <string name="empty"/>
+    <string name="empty" translatable="false" />
 
     <!-- AlertDialogue -->
     <string name="select">Select</string>
     <string name="cancel">Cancel</string>
     <string name="delete_ask">Do you want to delete this drawing ?</string>
     <string name="color_ask">Select a color</string>
-    <string name="empty_fields">One or more fields are empty.</string>
+    <string name="empty_fields">One or more fields are empty</string>
     <string name="user_already_exist">This User already exist</string>
     <string name="user_doesnt_exist">This user doesn\'t exist</string>
     <string name="wrong_username">"Error: wrong username"</string>
     <string name="wrong_password">"Error: wrong password"</string>
+    <string name="your_password">Your password is:</string>
     <string name="send">Send</string>
-    <string name="shared_with">shared with:</string>
+    <string name="shared_with">Shared with:</string>
     <string name="enter_other_username">Please enter an username</string>
     <string name="Visibility">Visibility</string>
     <string name="history_updated">Drawing successfully updated !</string>
 
     <!--  Icon  -->
-    <string name="palette_icon">🎨</string>
-    <string name="pen_icon">✏️</string>
-    <string name="picture_icon">🖼️</string>
-    <string name="brush_icon">🖌️</string>
-    <string name="rule_icon">📏</string>
-    <string name="loop_icon">🔎</string>
-
+    <string name="palette_icon" translatable="false">🎨</string>
+    <string name="pen_icon" translatable="false">✏️</string>
+    <string name="picture_icon" translatable="false">🖼️</string>
+    <string name="brush_icon" translatable="false">🖌️</string>
+    <string name="rule_icon" translatable="false">📏</string>
+    <string name="loop_icon" translatable="false">🔎</string>
 
     <!-- Export -->
     <string name="exporting">Exporting image</string>
     <string name="exportTrue">Image exported successfully</string>
     <string name="noDrawing">No Drawing found</string>
-
-
 
 </resources>

@@ -5,13 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
@@ -24,13 +19,10 @@ import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
-import com.example.pencollab.DataBase.User;
 import com.example.pencollab.DiscoverArrayAdapter;
-import com.example.pencollab.GalleryArrayAdapter;
 import com.example.pencollab.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class DiscoverActivity extends AppCompatActivity {
 

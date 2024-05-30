@@ -4,8 +4,6 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-import com.example.pencollab.DataBase.AppDatabase;
-
 public class DatabaseHolder {
     private static AppDatabase instance;
 
