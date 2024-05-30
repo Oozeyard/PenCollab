@@ -18,6 +18,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pencollab.DataBase.AppDatabase;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
@@ -36,7 +38,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView user_textView, status_textView;
     LinearLayout button_log_out;
-    ListView drawing_list;
+    RecyclerView drawing_list;
     Button search_button;
     DrawingDAO drawingDAO;
     UserDAO userDAO;
@@ -56,6 +58,8 @@ public class ProfileActivity extends AppCompatActivity {
         button_log_out = findViewById(R.id.container_button_log_out);
         drawing_list = findViewById(R.id.drawing_list);
         search_button = findViewById(R.id.search_button);
+
+        drawing_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // Get Database
         AppDatabase db = DatabaseHolder.getInstance(getApplicationContext());
@@ -105,19 +109,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Drawing list
         ArrayList<Drawing> publicDrawings = new ArrayList<>(drawingDAO.getPublicDrawingsByUserID(currentUser.getId()));
-        drawing_list.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, publicDrawings));
-
-        drawing_list.setOnItemClickListener((parent, view, position, id) -> {
-            Drawing drawing = (Drawing) parent.getItemAtPosition(position);
-            User user = userDAO.getUserByID(drawing.getOwnerId());
-
-            Intent intentPreview = new Intent(getApplicationContext(), PreviewActivity.class);
-            intentPreview.putExtra("DrawingID", drawing.getId());
-            intentPreview.putExtra("UserID", user.getId());
-            intentPreview.putExtra("isDiscoverActivity", true);
-            startActivity(intentPreview);
-            finish();
-        });
+        drawing_list.setAdapter(new DiscoverArrayAdapter(this, publicDrawings));
 
         // Search Bar
         search_button.setOnClickListener(v -> searchBuilder());

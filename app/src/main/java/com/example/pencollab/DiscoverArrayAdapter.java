@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pencollab.Activity.DiscoverActivity;
 import com.example.pencollab.Activity.PreviewActivity;
+import com.example.pencollab.Activity.ProfileActivity;
 import com.example.pencollab.DataBase.AppDatabase;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
@@ -66,7 +67,7 @@ public class DiscoverArrayAdapter extends RecyclerView.Adapter<DiscoverArrayAdap
             intent.putExtra("DrawingID", drawing.getId());
             intent.putExtra("UserID", user.getId());
 
-            if (context instanceof DiscoverActivity) intent.putExtra("isDicoverActivity", true);
+            if (context instanceof DiscoverActivity || context instanceof ProfileActivity) intent.putExtra("isDicoverActivity", true);
             else intent.putExtra("isDicoverActivity", false);
 
             context.startActivity(intent);
