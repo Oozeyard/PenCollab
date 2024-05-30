@@ -1,18 +1,30 @@
 package com.example.pencollab;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pencollab.Activity.DiscoverActivity;
+import com.example.pencollab.Activity.DrawingActivity;
+import com.example.pencollab.Activity.HistoryActivity;
+import com.example.pencollab.Activity.PreviewActivity;
+import com.example.pencollab.Activity.ProfileActivity;
 import com.example.pencollab.DataBase.AppDatabase;
+import com.example.pencollab.DataBase.DAO.DrawingDAO;
+import com.example.pencollab.DataBase.DAO.HistoryDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
@@ -23,38 +35,93 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class HistoryArrayAdapter extends ArrayAdapter<History> {
-    private final Context context;
-    public HistoryArrayAdapter(Context context, ArrayList<History> histories){
-        super(context, R.layout.discover_display, histories);
-        this.context = context;
+public class HistoryArrayAdapter extends RecyclerView.Adapter<HistoryArrayAdapter.ViewHolder> {
+    private final ArrayList<History> values;
+    private final DrawingDAO drawingDAO;
+    private final HistoryDAO historyDAO;
+
+    public HistoryArrayAdapter(Context context, ArrayList<History> values) {
+        this.values = values;
+        AppDatabase db = DatabaseHolder.getInstance(context.getApplicationContext());
+        this.drawingDAO = db.drawingDAO();
+        this.historyDAO = db.historyDAO();
     }
 
-    public View getView(int position, View discoverView, ViewGroup parent){
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.discover_display, parent, false);
+        return new ViewHolder(view);
+    }
 
-        if (discoverView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            discoverView = inflater.inflate(R.layout.discover_display, parent, false);
-        }
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        History history = values.get(position);
 
-        FrameLayout image_artwork = discoverView.findViewById(R.id.image_artwork);
-        TextView text_title_drawing = discoverView.findViewById(R.id.text_title_drawing);
-        TextView text_owner_drawing = discoverView.findViewById(R.id.text_owner_drawing);
-        text_owner_drawing.setVisibility(View.GONE);
+        Context context = holder.itemView.getContext();
 
-        History currentHistory = getItem(position);
+        Date drawingDate = history.getCreationDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        holder.text_title_drawing.setText(dateFormat.format(drawingDate));
+        holder.text_owner_drawing.setVisibility(View.GONE);
 
         // Display the drawing
-        DrawingView drawingView = new DrawingView(getContext(), null);
-        drawingView.setSize(currentHistory.getWidth(), currentHistory.getHeight());
-        drawingView.fromJSON(currentHistory.getDrawingData());
-        image_artwork.addView(drawingView.getDrawingPreview());
+        DrawingView drawingView = new DrawingView(context, null);
+        drawingView.setSize(history.getWidth(), history.getHeight());
+        drawingView.fromJSON(history.getDrawingData());
+        holder.image_artwork.addView(drawingView.getDrawingPreview());
 
-        Date drawingDate = currentHistory.getCreationDate();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-        text_title_drawing.setText(dateFormat.format(drawingDate));
+        holder.itemView.setOnClickListener(v -> {
+            Drawing drawing = drawingDAO.getDrawingByID(history.Did);
 
-        return discoverView;
+            // Update drawing
+            drawing.setDrawingData(history.getDrawingData());
+            drawingDAO.updateDrawing(drawing);
+            Toast.makeText(context, R.string.history_updated, Toast.LENGTH_LONG).show();
+
+            // Return to the drawing
+            Intent intent = new Intent(context, DrawingActivity.class);
+            intent.putExtra("DrawingID", drawing.getId());
+            context.startActivity(intent);
+        });
+
+        holder.itemView.setOnLongClickListener(v -> {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(R.string.delete)
+                    .setMessage(R.string.delete_ask)
+                    .setPositiveButton("YES", (dialog, which) -> {
+                        // Delete to the database
+                        historyDAO.deleteHistory(history);
+
+                        // Delete to the list
+                        values.remove(history);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position, values.size());
+                        dialog.dismiss();
+                    })
+                    .setNegativeButton("NO", (dialog, which) -> dialog.dismiss())
+                    .create()
+                    .show();
+            return true;
+        });
+
     }
 
+    @Override
+    public int getItemCount() {
+        return values.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout image_artwork;
+        TextView text_title_drawing;
+        TextView text_owner_drawing;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            image_artwork = itemView.findViewById(R.id.image_artwork);
+            text_title_drawing = itemView.findViewById(R.id.text_title_drawing);
+            text_owner_drawing = itemView.findViewById(R.id.text_owner_drawing);
+        }
+    }
 }
