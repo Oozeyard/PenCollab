@@ -48,17 +48,16 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
         Drawing drawing = values.get(position);
         holder.title.setText(drawing.getTitle());
 
-        Drawing currentDrawing = values.get(position);
 
         // Display the drawing
         DrawingView drawingView = new DrawingView(holder.itemView.getContext(), null);
-        drawingView.setSize(currentDrawing.getWidth(), currentDrawing.getHeight());
-        drawingView.fromJSON(currentDrawing.getDrawingData());
+        drawingView.setSize(drawing.getWidth(), drawing.getHeight());
+        drawingView.fromJSON(drawing.getDrawingData());
         holder.drawing_preview.addView(drawingView.getDrawingPreview());
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(holder.itemView.getContext(), DrawingActivity.class);
-            intent.putExtra("DrawingID", currentDrawing.getId());
+            intent.putExtra("DrawingID", drawing.getId());
             holder.itemView.getContext().startActivity(intent);
         });
 
@@ -68,7 +67,7 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
                     .setMessage(R.string.delete_ask)
                     .setPositiveButton("YES", (dialog, which) -> {
                         // Delete to the database
-                        drawingDAO.deleteDrawing(currentDrawing);
+                        drawingDAO.deleteDrawing(drawing);
 
                         // Delete to the list
                         values.remove(position);
@@ -99,6 +98,5 @@ public class GalleryArrayAdapter extends RecyclerView.Adapter<GalleryArrayAdapte
             drawing_preview = itemView.findViewById(R.id.image_artwork);
         }
     }
-
 
 }

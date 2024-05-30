@@ -62,12 +62,12 @@
         android:layout_marginTop="28dp"
         android:gravity="start|center_vertical"
         android:maxLines="1"
-        android:visibility="gone"
-        android:text="Featured Collaborations"
+        android:visibility="visible"
+        android:text="@string/public_drawing"
         android:textSize="18sp" />
 
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/discover_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

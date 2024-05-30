@@ -16,6 +16,8 @@ import android.widget.ListView;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pencollab.DataBase.AppDatabase;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
@@ -34,7 +36,7 @@ public class JoinActivity extends AppCompatActivity {
 
     Context context;
     ImageView back_arrow;
-    ListView join_list;
+    RecyclerView join_list;
     EditText search_bar;
     UserDAO userDAO;
     DrawingDAO drawingDAO;
@@ -64,7 +66,9 @@ public class JoinActivity extends AppCompatActivity {
 
         // Set up discover list
         join_list = findViewById(R.id.join_list);
-        ArrayList<Drawing> sharedDrawing = null;
+        join_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
+        ArrayList<Drawing> shared_drawings = new ArrayList<>();
 
         // Get current & add all shared drawings
         Intent intent = getIntent();
@@ -73,23 +77,11 @@ public class JoinActivity extends AppCompatActivity {
             currentUser = userDAO.getUserByID(userId);
             List<Long> sharedDrawingIDs = drawingUserDAO.getSharedDrawingID(currentUser.getId());
             if (!sharedDrawingIDs.isEmpty()) {
-                sharedDrawing = (ArrayList<Drawing>) drawingDAO.getDrawingsByIDs(sharedDrawingIDs);
+                shared_drawings = (ArrayList<Drawing>) drawingDAO.getDrawingsByIDs(sharedDrawingIDs);
             }
         }
 
-        join_list.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, sharedDrawing));
-
-        join_list.setOnItemClickListener((parent, view, position, id) -> {
-            Drawing drawing = (Drawing) parent.getItemAtPosition(position);
-            User user = userDAO.getUserByID(drawing.getOwnerId());
-
-            Intent intent1 = new Intent(context, PreviewActivity.class);
-            intent1.putExtra("DrawingID", drawing.getId());
-            intent1.putExtra("UserID", user.getId());
-            intent1.putExtra("isDicoverActivity", false);
-            startActivity(intent1);
-            finish();
-        });
+        join_list.setAdapter(new DiscoverArrayAdapter(this, shared_drawings));
 
         back_arrow.setOnClickListener(v -> {
             this.startActivity(new Intent(context, MainActivity.class));
@@ -113,6 +105,13 @@ public class JoinActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = s.toString();
+                ArrayList<Drawing> shared_drawings = new ArrayList<>();
+                List<Long> sharedDrawingIDs = drawingUserDAO.getSharedDrawingIDsByTitle(currentUser.getId(), query);
+                if (!sharedDrawingIDs.isEmpty()) {
+                    shared_drawings = (ArrayList<Drawing>) drawingDAO.getDrawingsByIDs(sharedDrawingIDs);
+                }
+
+                join_list.setAdapter(new DiscoverArrayAdapter(context, shared_drawings));
             }
             @Override
             public void afterTextChanged(Editable s) {}

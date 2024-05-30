@@ -25,4 +25,9 @@ public interface DrawingUserDAO {
 
     @Query("SELECT Did FROM DrawingUser WHERE UserId = :Uid")
     List<Long> getSharedDrawingID(long Uid);
+
+    @Query("SELECT Drawings.Did FROM Drawings " +
+            "INNER JOIN DrawingUser ON Drawings.Did = DrawingUser.Did " +
+            "WHERE DrawingUser.UserId = :Uid AND Drawings.title LIKE '%' || :searchString || '%'")
+    List<Long> getSharedDrawingIDsByTitle(long Uid, String searchString);
 }

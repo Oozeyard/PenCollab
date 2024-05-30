@@ -63,10 +63,11 @@
         android:gravity="start|center_vertical"
         android:maxLines="1"
         android:text="@string/shared_drawing"
+        android:visibility="visible"
         android:textSize="18sp" />
 
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/join_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

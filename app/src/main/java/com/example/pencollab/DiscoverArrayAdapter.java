@@ -1,6 +1,7 @@
 package com.example.pencollab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,8 +12,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pencollab.Activity.DiscoverActivity;
+import com.example.pencollab.Activity.PreviewActivity;
 import com.example.pencollab.DataBase.AppDatabase;
+import com.example.pencollab.DataBase.DAO.DrawingDAO;
 import com.example.pencollab.DataBase.DAO.UserDAO;
 import com.example.pencollab.DataBase.DatabaseHolder;
 import com.example.pencollab.DataBase.Drawing;
@@ -20,41 +25,69 @@ import com.example.pencollab.DataBase.User;
 
 import java.util.ArrayList;
 
-public class DiscoverArrayAdapter extends ArrayAdapter<Drawing> {
-    private final Context context;
-    public DiscoverArrayAdapter(Context context, ArrayList<Drawing> drawings){
-        super(context, R.layout.discover_display, drawings);
-        this.context = context;
+public class DiscoverArrayAdapter extends RecyclerView.Adapter<DiscoverArrayAdapter.ViewHolder> {
+    private final ArrayList<Drawing> values;
+    private final DrawingDAO drawingDAO;
+    private final UserDAO userDAO;
+
+    public DiscoverArrayAdapter(Context context, ArrayList<Drawing> values) {
+        this.values = values;
+        AppDatabase db = DatabaseHolder.getInstance(context.getApplicationContext());
+        this.drawingDAO = db.drawingDAO();
+        this.userDAO = db.userDAO();
     }
 
-    public View getView(int position, View discoverView, ViewGroup parent){
-        // Get Database
-        AppDatabase db = DatabaseHolder.getInstance(context);
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.discover_display, parent, false);
+        return new ViewHolder(view);
+    }
 
-        // Get DAO
-        UserDAO userDAO = db.userDAO();
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Drawing drawing = values.get(position);
 
-        if (discoverView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            discoverView = inflater.inflate(R.layout.discover_display, parent, false);
-        }
+        Context context = holder.itemView.getContext();
 
-        FrameLayout image_artwork = discoverView.findViewById(R.id.image_artwork);
-        TextView text_title_drawing = discoverView.findViewById(R.id.text_title_drawing);
-        TextView text_owner_drawing = discoverView.findViewById(R.id.text_owner_drawing);
-
-        Drawing currentDrawing = getItem(position);
+        holder.text_title_drawing.setText(drawing.getTitle());
+        holder.text_owner_drawing.setText(userDAO.getUserByID(drawing.getOwnerId()).getUsername());
 
         // Display the drawing
-        DrawingView drawingView = new DrawingView(getContext(), null);
-        drawingView.setSize(currentDrawing.getWidth(), currentDrawing.getHeight());
-        drawingView.fromJSON(currentDrawing.getDrawingData());
-        image_artwork.addView(drawingView.getDrawingPreview());
+        DrawingView drawingView = new DrawingView(context, null);
+        drawingView.setSize(drawing.getWidth(), drawing.getHeight());
+        drawingView.fromJSON(drawing.getDrawingData());
+        holder.image_artwork.addView(drawingView.getDrawingPreview());
 
-        text_title_drawing.setText(currentDrawing.getTitle());
-        text_owner_drawing.setText(userDAO.getUserByID(currentDrawing.getOwnerId()).getUsername());
+        holder.itemView.setOnClickListener(v -> {
+            User user = userDAO.getUserByID(drawing.getOwnerId());
 
-        return discoverView;
+            Intent intent = new Intent(context, PreviewActivity.class);
+            intent.putExtra("DrawingID", drawing.getId());
+            intent.putExtra("UserID", user.getId());
+
+            if (context instanceof DiscoverActivity) intent.putExtra("isDicoverActivity", true);
+            else intent.putExtra("isDicoverActivity", false);
+
+            context.startActivity(intent);
+        });
     }
 
+    @Override
+    public int getItemCount() {
+        return values.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        FrameLayout image_artwork;
+        TextView text_title_drawing;
+        TextView text_owner_drawing;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            image_artwork = itemView.findViewById(R.id.image_artwork);
+            text_title_drawing = itemView.findViewById(R.id.text_title_drawing);
+            text_owner_drawing = itemView.findViewById(R.id.text_owner_drawing);
+        }
+    }
 }

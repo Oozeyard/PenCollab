@@ -28,6 +28,8 @@ public interface DrawingDAO {
     List<Drawing> getPublicDrawings();
     @Query("SELECT * FROM Drawings WHERE isPublic = true AND title = :title")
     List<Drawing> getPublicDrawingsByName(String title);
+    @Query("SELECT * FROM Drawings WHERE isPublic = 1 AND title LIKE '%' || :searchString || '%'")
+    List<Drawing> getPublicDrawingsByString(String searchString);
     @Query("SELECT * FROM Drawings WHERE ownerId = :ownerId")
     List<Drawing> getDrawingsByOwnerID(long ownerId);
     @Query("SELECT OwnerId FROM Drawings WHERE Did = :Did")

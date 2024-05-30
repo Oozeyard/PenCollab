@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.pencollab.DataBase.AppDatabase;
 import com.example.pencollab.DataBase.DAO.DrawingDAO;
@@ -34,11 +36,10 @@ public class DiscoverActivity extends AppCompatActivity {
 
     Context context;
     ImageView back_arrow;
-    ListView discover_list;
+    RecyclerView discover_list;
     EditText search_bar;
     UserDAO userDAO;
     DrawingDAO drawingDAO;
-    List<Drawing> drawings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,22 +62,12 @@ public class DiscoverActivity extends AppCompatActivity {
 
         // Set up discover list
         discover_list = findViewById(R.id.discover_list);
+        discover_list.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+
 
         // Show public drawing
         ArrayList<Drawing> public_drawings = new ArrayList<>(drawingDAO.getPublicDrawings());
-        discover_list.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, public_drawings));
-
-        discover_list.setOnItemClickListener((parent, view, position, id) -> {
-            Drawing drawing = (Drawing) parent.getItemAtPosition(position);
-            User user = userDAO.getUserByID(drawing.getOwnerId());
-
-            Intent intent = new Intent(context, PreviewActivity.class);
-            intent.putExtra("DrawingID", drawing.getId());
-            intent.putExtra("UserID", user.getId());
-            intent.putExtra("isDicoverActivity", true);
-            startActivity(intent);
-            finish();
-        });
+        discover_list.setAdapter(new DiscoverArrayAdapter(this, public_drawings));
 
 
         back_arrow.setOnClickListener(v -> {
@@ -101,8 +92,8 @@ public class DiscoverActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String query = s.toString();
-                drawings.clear();
-                drawings = drawingDAO.getPublicDrawingsByName(query);
+                ArrayList<Drawing> public_drawings = new ArrayList<>(drawingDAO.getPublicDrawingsByString(query));
+                discover_list.setAdapter(new DiscoverArrayAdapter(context, public_drawings));
             }
             @Override
             public void afterTextChanged(Editable s) {}
