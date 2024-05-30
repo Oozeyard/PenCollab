@@ -73,7 +73,7 @@ public class DiscoverActivity extends AppCompatActivity {
             Intent intent = new Intent(context, PreviewActivity.class);
             intent.putExtra("DrawingID", drawing.getId());
             intent.putExtra("UserID", user.getId());
-            intent.putExtra("isDicoverActivity", true);
+            intent.putExtra("isDiscoverActivity", true);
             startActivity(intent);
             finish();
         });

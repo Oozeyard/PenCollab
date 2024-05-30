@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -39,7 +36,6 @@ public class JoinActivity extends AppCompatActivity {
     UserDAO userDAO;
     DrawingDAO drawingDAO;
     DrawingUserDAO drawingUserDAO;
-    List<Drawing> drawings;
     User currentUser;
 
     @Override
@@ -64,7 +60,6 @@ public class JoinActivity extends AppCompatActivity {
 
         // Set up discover list
         join_list = findViewById(R.id.join_list);
-        ArrayList<Drawing> sharedDrawing = null;
 
         // Get current & add all shared drawings
         Intent intent = getIntent();
@@ -73,11 +68,10 @@ public class JoinActivity extends AppCompatActivity {
             currentUser = userDAO.getUserByID(userId);
             List<Long> sharedDrawingIDs = drawingUserDAO.getSharedDrawingID(currentUser.getId());
             if (!sharedDrawingIDs.isEmpty()) {
-                sharedDrawing = (ArrayList<Drawing>) drawingDAO.getDrawingsByIDs(sharedDrawingIDs);
+                ArrayList<Drawing> sharedDrawing = (ArrayList<Drawing>) drawingDAO.getDrawingsByIDs(sharedDrawingIDs);
+                join_list.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, sharedDrawing));
             }
         }
-
-        join_list.setAdapter((ListAdapter) new DiscoverArrayAdapter(this, sharedDrawing));
 
         join_list.setOnItemClickListener((parent, view, position, id) -> {
             Drawing drawing = (Drawing) parent.getItemAtPosition(position);
@@ -86,7 +80,7 @@ public class JoinActivity extends AppCompatActivity {
             Intent intent1 = new Intent(context, PreviewActivity.class);
             intent1.putExtra("DrawingID", drawing.getId());
             intent1.putExtra("UserID", user.getId());
-            intent1.putExtra("isDicoverActivity", false);
+            intent1.putExtra("isDiscoverActivity", false);
             startActivity(intent1);
             finish();
         });

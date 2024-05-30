@@ -1,5 +1,6 @@
 package com.example.pencollab.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -91,6 +93,30 @@ public class HistoryActivity extends AppCompatActivity {
             }
         });
 
+        history_list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                History history = (History) parent.getItemAtPosition(position);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HistoryActivity.this);
+                builder.setTitle(R.string.delete)
+                        .setMessage(R.string.delete_ask)
+                        .setPositiveButton("YES", (dialog, which) -> {
+                            // Delete to the database
+                            historyDAO.deleteHistory(history);
+
+                            // Delete to the list
+                            historylist.remove(history);
+                            ((BaseAdapter) history_list.getAdapter()).notifyDataSetChanged();
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("NO", (dialog, which) -> dialog.dismiss())
+                        .create()
+                        .show();
+
+                return true;
+            }
+        });
         // back arrow
         back_arrow.setOnClickListener(v -> {
             this.startActivity(new Intent(context, MainActivity.class));
