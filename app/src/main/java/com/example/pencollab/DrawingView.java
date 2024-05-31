@@ -43,7 +43,7 @@ public class DrawingView extends View {
     private float x, y;
     private float penSize = 10; // Taille du trait par défaut
     private float eraserSize = 10; // Taille de la gomme par défaut
-    private int Widht, Height;
+    private int Width, Height;
     private int color = Color.BLACK;
 
     final PorterDuffXfermode x_src_over;
@@ -90,7 +90,7 @@ public class DrawingView extends View {
     public float getPenSize() { return penSize; }
 
     public void setSize(int width, int height) {
-        Widht = width;
+        Width = width;
         Height = height;
 
     }
@@ -223,7 +223,7 @@ public class DrawingView extends View {
                     @SuppressLint("DrawAllocation")
                     Matrix matrix = new Matrix();
                     matrix.postScale(
-                            (float) getWidth() / Widht,
+                            (float) getWidth() / Width,
                             (float) getHeight() / Height
                     );
 
