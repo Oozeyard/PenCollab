@@ -61,6 +61,11 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
+            if (userDAO.getUserByUsername(usernameS) != null) {
+                showAlert(getString(R.string.user_already_exist));
+                return;
+            }
+
             user = new User(usernameS, emailS, passwordS, false);
 
             // set the new currentUser
